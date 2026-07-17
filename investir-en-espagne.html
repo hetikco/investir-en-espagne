@@ -387,9 +387,11 @@ body {
 .card-body { padding: 18px 20px; }
 
 /* Stepper (dévoilement progressif) */
-.sim-step { scroll-margin-top: 84px; transition: opacity .25s; }
+.sim-step { scroll-margin-top: 84px; transition: opacity .25s; overflow: visible; }
+.sim-step .card-head { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 .sim-step.locked { opacity: .45; pointer-events: none; user-select: none; }
 .sim-step.locked .card-head::after { content: '🔒'; float: right; font-size: 13px; opacity: .6; }
+.tip-auto { vertical-align: 1px; }
 .sim-next { margin-top: 18px; }
 .opt-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--gray-500); background: var(--gray-100); padding: 1px 6px; border-radius: 20px; margin-left: 6px; vertical-align: 1px; }
 #city { width: 100%; height: 38px; border: 1.5px solid var(--gray-300); border-radius: var(--radius); font-family: var(--font-body); font-size: 13.5px; color: var(--gray-900); background: var(--white); padding: 0 11px; }
@@ -1216,8 +1218,16 @@ I18N.fr = {
   ph_price: "ex. 100000", ph_budget: "ex. 60000", ph_surface: "ex. 60", ph_city: "ex. Valencia",
   f_region_ph: "— Sélectionner —",
   f_agency: "Commission d'agence", f_notary: "Notaire & registre", f_notary_hint: "Estimé automatiquement si laissé vide",
-  f_works: "Travaux / réforme", f_furniture: "Mobilier & électroménager",
+  f_works: "Travaux", f_furniture: "Mobilier & électroménager",
   f_contingency: "Imprévus", f_travel: "Déplacements", f_travel_hint: "Visite, signature, aller-retours",
+  auto_agency_info: "Estimé à 4 % du prix d'achat. En Espagne, la commission d'agence est souvent à la charge de l'acheteur.",
+  auto_notary_info: "Barème notarial officiel + frais d'inscription au registre, calculés selon le prix du bien.",
+  auto_works_info: "Estimé à 5 % du prix pour un bien ancien, 0 € pour du neuf ou VPO. À ajuster selon l'état réel.",
+  auto_furniture_info: "Estimé à 55 €/m² × la surface (ou 2 000 € par défaut si la surface n'est pas renseignée).",
+  auto_community_info: "Estimé à 0,48 % du prix par an. Charges de copropriété moyennes, très variables selon l'immeuble.",
+  auto_ibi_info: "Estimé à 0,2 % du prix par an. Équivalent de la taxe foncière, varie selon la commune.",
+  auto_homeIns_info: "Estimé à 0,3 % du prix par an pour l'assurance habitation.",
+  auto_lifeIns_info: "Estimé à 0,18 % du montant emprunté par an. Assurance emprunteur, uniquement si vous financez à crédit.",
   f_mortgage_q: "Je finance avec un prêt hypothécaire",
   f_ltv: "Quotité (LTV)", f_rate: "Taux annuel", f_years: "Durée", unit_years: "ans",
   f_monthly: "Mensualité", badge_auto: "auto", f_monthly_hint: "Calculée automatiquement — modifiable si votre banque vous a donné un chiffre exact",
@@ -1597,8 +1607,16 @@ I18N.en = {
   ph_price: "e.g. 100000", ph_budget: "e.g. 60000", ph_surface: "e.g. 60", ph_city: "e.g. Valencia",
   f_region_ph: "— Select —",
   f_agency: "Agency commission", f_notary: "Notary & registry", f_notary_hint: "Estimated automatically if left empty",
-  f_works: "Renovation works", f_furniture: "Furniture & appliances",
+  f_works: "Works", f_furniture: "Furniture & appliances",
   f_contingency: "Contingency", f_travel: "Travel costs", f_travel_hint: "Viewing, signing, return trips",
+  auto_agency_info: "Estimated at 4 % of the purchase price. In Spain, the agency commission is often paid by the buyer.",
+  auto_notary_info: "Official notary scale + land registry fees, calculated from the property price.",
+  auto_works_info: "Estimated at 5 % of the price for a resale property, €0 for new builds or VPO. Adjust to the actual condition.",
+  auto_furniture_info: "Estimated at €55/m² × the living area (or €2,000 by default if no area is entered).",
+  auto_community_info: "Estimated at 0.48 % of the price per year. Average community fees, highly variable by building.",
+  auto_ibi_info: "Estimated at 0.2 % of the price per year. The local property tax, varies by municipality.",
+  auto_homeIns_info: "Estimated at 0.3 % of the price per year for home insurance.",
+  auto_lifeIns_info: "Estimated at 0.18 % of the loan amount per year. Mortgage life insurance, only if financing with a loan.",
   f_mortgage_q: "I am financing with a mortgage",
   f_ltv: "LTV ratio", f_rate: "Annual rate", f_years: "Term", unit_years: "yrs",
   f_monthly: "Monthly payment", badge_auto: "auto", f_monthly_hint: "Calculated automatically — editable if your bank gave you an exact figure",
@@ -1971,8 +1989,16 @@ I18N.es = {
   ph_price: "ej. 100000", ph_budget: "ej. 60000", ph_surface: "ej. 60", ph_city: "ej. Valencia",
   f_region_ph: "— Seleccionar —",
   f_agency: "Comisión de agencia", f_notary: "Notaría y registro", f_notary_hint: "Estimado automáticamente si se deja vacío",
-  f_works: "Obras / reforma", f_furniture: "Mobiliario y electrodomésticos",
+  f_works: "Obras", f_furniture: "Mobiliario y electrodomésticos",
   f_contingency: "Imprevistos", f_travel: "Desplazamientos", f_travel_hint: "Visita, firma, viajes de ida y vuelta",
+  auto_agency_info: "Estimado en un 4 % del precio de compra. En España, la comisión de agencia suele correr a cargo del comprador.",
+  auto_notary_info: "Arancel notarial oficial + gastos de inscripción en el registro, calculados según el precio del inmueble.",
+  auto_works_info: "Estimado en un 5 % del precio en segunda mano, 0 € en obra nueva o VPO. Ajusta según el estado real.",
+  auto_furniture_info: "Estimado en 55 €/m² × la superficie (o 2 000 € por defecto si no se indica la superficie).",
+  auto_community_info: "Estimado en un 0,48 % del precio al año. Gastos de comunidad medios, muy variables según el edificio.",
+  auto_ibi_info: "Estimado en un 0,2 % del precio al año. Equivale al impuesto de bienes inmuebles, varía según el municipio.",
+  auto_homeIns_info: "Estimado en un 0,3 % del precio al año para el seguro de hogar.",
+  auto_lifeIns_info: "Estimado en un 0,18 % del importe del préstamo al año. Seguro de vida, solo si financias con hipoteca.",
   f_mortgage_q: "Financio con una hipoteca",
   f_ltv: "Financiación (LTV)", f_rate: "Tipo anual", f_years: "Plazo", unit_years: "años",
   f_monthly: "Cuota mensual", badge_auto: "auto", f_monthly_hint: "Calculada automáticamente — editable si tu banco te ha dado una cifra exacta",
@@ -2624,6 +2650,13 @@ AUTO_FIELDS.forEach(id => {
   $(id).addEventListener('dblclick', () => { autoManual[id] = false; recalcDefaults(); });
 });
 
+/* Pastille d'info « comment c'est calculé » à côté de chaque montant auto (le texte est rempli par setLang via data-i18n) */
+['agency','notary','works','furniture','community','ibi','homeIns','lifeIns'].forEach(id => {
+  const badge = $(id + '-badge');
+  if (badge) badge.insertAdjacentHTML('afterend',
+    `<button class="tip tip-auto" type="button" aria-label="?" onclick="event.stopPropagation();toggleTip(this)">i<span class="tip-pop" data-i18n="auto_${id}_info"></span></button>`);
+});
+
 /* ============================================================
    6. CALCUL
    ============================================================ */
@@ -2966,9 +2999,9 @@ function render(d) {
       <div class="total-lbl">${T.total_lbl}</div>
       <div class="total-amt">${fmt(d.totalInvest)}</div>
       <div class="total-sub">${T.total_sub.replace('{pct}', pct(d.extraPct, 1).replace(' %',''))}</div>
-      <div class="total-split">
+      <div class="total-split"${d.mort && d.loan > 0 ? '' : ' style="grid-template-columns:1fr"'}>
         <div class="tsplit"><div class="tsplit-l">${T.tsplit_extra}</div><div class="tsplit-v">${fmt(d.extra)}</div></div>
-        <div class="tsplit"><div class="tsplit-l">${T.tsplit_cash}</div><div class="tsplit-v">${fmt(d.cashNeeded)}</div>${d.mort && d.loan > 0 ? `<div class="tsplit-note">${T.tsplit_cash_nomort} : ${fmt(d.totalInvest)}</div>` : ''}</div>
+        ${d.mort && d.loan > 0 ? `<div class="tsplit"><div class="tsplit-l">${T.tsplit_cash}</div><div class="tsplit-v">${fmt(d.cashNeeded)}</div></div>` : ''}
       </div>
     </div>
 
