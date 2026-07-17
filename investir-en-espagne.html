@@ -396,6 +396,14 @@ body {
 .opt-tag { font-size: 10px; font-weight: 600; text-transform: uppercase; letter-spacing: .04em; color: var(--gray-500); background: var(--gray-100); padding: 1px 6px; border-radius: 20px; margin-left: 6px; vertical-align: 1px; }
 #city { width: 100%; height: 38px; border: 1.5px solid var(--gray-300); border-radius: var(--radius); font-family: var(--font-body); font-size: 13.5px; color: var(--gray-900); background: var(--white); padding: 0 11px; }
 #city:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(27,46,75,.09); }
+.ac-wrap { position: relative; }
+.ac-list { display: none; position: absolute; top: calc(100% + 4px); left: 0; right: 0; z-index: 40;
+  background: var(--white); border: 1px solid var(--gray-200); border-radius: var(--radius);
+  box-shadow: var(--shadow-lg); max-height: 220px; overflow-y: auto; }
+.ac-list.open { display: block; }
+.ac-item { padding: 8px 12px; font-size: 13.5px; color: var(--gray-900); cursor: pointer; display: flex; justify-content: space-between; gap: 10px; }
+.ac-item:hover, .ac-item.active { background: #EFF3F9; }
+.ac-item .ac-region { font-size: 11px; color: var(--gray-500); }
 
 .field { margin-bottom: 15px; }
 .field:last-child { margin-bottom: 0; }
@@ -478,7 +486,8 @@ input[type=number] { -moz-appearance: textfield; }
 .res-empty strong { font-size: 14px; color: var(--gray-700); }
 .res-empty p { font-size: 13px; color: var(--gray-500); }
 
-.doc-head { background: var(--navy); padding: 18px 20px; position: relative; overflow: hidden; }
+#res-card { overflow: visible; }
+.doc-head { background: var(--navy); padding: 18px 20px; position: relative; overflow: hidden; border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 .doc-head::before { content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px; background: linear-gradient(180deg, var(--gold), var(--gold-light)); }
 .doc-head::after { content: ''; position: absolute; right: -24px; top: -24px; width: 96px; height: 96px; border-radius: 50%; border: 15px solid rgba(197,155,71,.09); }
 .doc-region { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold-light); }
@@ -756,16 +765,18 @@ input[type=number] { -moz-appearance: textfield; }
             </div>
 
             <div class="field">
-              <label data-i18n="f_region"></label>
-              <div class="swrap"><select id="region"></select></div>
-              <div class="ferr" id="region-err" data-i18n="err_region"></div>
+              <label for="city"><span data-i18n="f_city"></span><span class="opt-tag" data-i18n="f_optional"></span></label>
+              <div class="ac-wrap">
+                <input type="text" id="city" autocomplete="off" role="combobox" aria-autocomplete="list" aria-expanded="false" aria-controls="city-ac">
+                <div class="ac-list" id="city-ac" role="listbox"></div>
+              </div>
+              <div class="fhint" data-i18n="f_city_hint"></div>
             </div>
 
             <div class="field">
-              <label for="city"><span data-i18n="f_city"></span><span class="opt-tag" data-i18n="f_optional"></span></label>
-              <input type="text" id="city" list="city-list" autocomplete="off">
-              <datalist id="city-list"></datalist>
-              <div class="fhint" data-i18n="f_city_hint"></div>
+              <label data-i18n="f_region"></label>
+              <div class="swrap"><select id="region"></select></div>
+              <div class="ferr" id="region-err" data-i18n="err_region"></div>
             </div>
 
             <div class="field">
@@ -956,18 +967,25 @@ input[type=number] { -moz-appearance: textfield; }
             </div>
 
             <div class="divider"></div>
+            <div class="subhead" data-i18n="sub_projection"></div>
             <div class="frow">
-              <div class="field">
-                <label for="resalePrice" data-i18n="f_resale"></label>
-                <div class="iwrap"><input type="number" id="resalePrice" value="" min="0" step="1000"><span class="iunit">€</span></div>
-              </div>
               <div class="field">
                 <label for="apprecRate" data-i18n="f_apprec"></label>
                 <div class="iwrap"><input type="number" id="apprecRate" value="3" min="-5" max="10" step="0.5"><span class="iunit">%</span></div>
-                <div class="fhint" data-i18n="f_apprec_hint"></div>
+              </div>
+              <div class="field">
+                <label for="rentInflation" data-i18n="f_rentinfl"></label>
+                <div class="iwrap"><input type="number" id="rentInflation" value="2" min="-5" max="10" step="0.5"><span class="iunit">%</span></div>
               </div>
             </div>
-            <div class="fhint" data-i18n="f_resale_hint"></div>
+            <div class="fhint" data-i18n="f_apprec_hint"></div>
+
+            <div class="divider"></div>
+            <div class="field">
+              <label for="resalePrice" data-i18n="f_resale"></label>
+              <div class="iwrap"><input type="number" id="resalePrice" value="" min="0" step="1000"><span class="iunit">€</span></div>
+              <div class="fhint" data-i18n="f_resale_hint"></div>
+            </div>
 
             <button class="btn btn-primary" onclick="runCalc()" style="margin-top:16px">
               <svg width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11"/><line x1="12" y1="11" x2="12" y2="11"/><line x1="16" y1="11" x2="16" y2="11"/><line x1="8" y1="16" x2="8" y2="16"/><line x1="12" y1="16" x2="12" y2="16"/><line x1="16" y1="16" x2="16" y2="16"/></svg>
@@ -1249,7 +1267,8 @@ I18N.fr = {
   resale_price: "Prix de revente", resale_gain: "Plus-value estimée", resale_gain_hint: "Prix de revente − investissement total initial",
   resale_tax: "Impôt sur la plus-value (IRNR)", resale_withholding: "Retenue à la vente", resale_withholding_hint: "Prélevée par l'acheteur, versée au fisc pour votre compte",
   resale_balance_due: "Solde à payer au fisc", resale_balance_refund: "Solde à récupérer auprès du fisc",
-  f_apprec: "Appréciation annuelle", f_apprec_hint: "Hypothèse pour la projection de valeur sur 20 ans.",
+  sub_projection: "Hypothèses de projection (20 ans)",
+  f_apprec: "Appréciation du bien", f_rentinfl: "Inflation des loyers", f_apprec_hint: "Hypothèses annuelles pour le bilan patrimoine sur 20 ans.",
   ppm2_label: "Prix payé : {u}/m² · moyenne indicative à {city} : {c}/m² —",
   ppm2_below: "sous le marché, a priori une bonne affaire.",
   ppm2_around: "dans la moyenne du marché.",
@@ -1260,7 +1279,7 @@ I18N.fr = {
   proj_equity_full: "Dans 20 ans, votre patrimoine net atteint <strong>{e}</strong> — le bien vaut {v} et il ne reste que {d} de dette. Le locataire aura remboursé une grande partie de votre crédit.",
   proj_equity_cash: "Dans 20 ans, le bien vaudrait environ <strong>{v}</strong>, soit une plus-value estimée de <strong>{g}</strong>.",
   proj_return: "Bilan net sur 20 ans : environ <strong>{ng}</strong> — patrimoine final {e} + cash-flow locatif cumulé {cf} − apport de départ {a}.",
-  proj_note: "Estimation illustrative à loyers, charges et taux d'appréciation constants — hors inflation, cycles de marché et fiscalité de revente (détaillée ci-dessus).",
+  proj_note: "Hypothèses : valeur du bien +{apprec} %/an, loyers indexés +{infl} %/an, charges constantes. Illustratif — hors cycles de marché et fiscalité de revente (détaillée ci-dessus).",
   btn_calc: "Calculer",
 
   err_price: "Saisissez un prix valide (minimum 10 000 €)",
@@ -1280,6 +1299,7 @@ I18N.fr = {
   scen_title: "Cash-flow locatif annuel",
   scen_min: "Min.", scen_real: "Réaliste", scen_max: "Max.",
   r_gross: "Loyers bruts", r_vacancy: "− Vacance", r_net_rent: "Loyers encaissés",
+  vacancy_info: "Périodes où le logement reste vide entre deux locataires. On retient ici une vacance moyenne (modifiable à l'étape 4) : un loyer calculé sur 12 mois pleins est théorique.",
   r_mortgage: "− Crédit", r_community: "− Copropriété", r_ibi: "− IBI",
   r_ins: "− Assurances", r_mgmt: "− Gestion locative", r_unpaid: "− Loyers impayés",
   r_irnr: "− IRNR (19 %)", r_cf_year: "Cash-flow annuel", r_cf_month: "Cash-flow mensuel",
@@ -1641,7 +1661,8 @@ I18N.en = {
   resale_price: "Resale price", resale_gain: "Estimated capital gain", resale_gain_hint: "Resale price − initial total investment",
   resale_tax: "Capital gains tax (IRNR)", resale_withholding: "Sale withholding", resale_withholding_hint: "Withheld by the buyer, paid to the tax authorities on your behalf",
   resale_balance_due: "Balance due to the tax authorities", resale_balance_refund: "Balance to reclaim from the tax authorities",
-  f_apprec: "Annual appreciation", f_apprec_hint: "Assumption for the 20-year value projection.",
+  sub_projection: "Projection assumptions (20 years)",
+  f_apprec: "Property appreciation", f_rentinfl: "Rent inflation", f_apprec_hint: "Annual assumptions for the 20-year wealth projection.",
   ppm2_label: "Price paid: {u}/m² · indicative average in {city}: {c}/m² —",
   ppm2_below: "below market, likely a good deal.",
   ppm2_around: "in line with the market.",
@@ -1652,7 +1673,7 @@ I18N.en = {
   proj_equity_full: "In 20 years, your net equity reaches <strong>{e}</strong> — the property is worth {v} with only {d} of debt left. The tenant will have repaid much of your mortgage.",
   proj_equity_cash: "In 20 years, the property would be worth around <strong>{v}</strong>, an estimated capital gain of <strong>{g}</strong>.",
   proj_return: "Net result over 20 years: around <strong>{ng}</strong> — final equity {e} + cumulative rental cash-flow {cf} − initial cash in {a}.",
-  proj_note: "Illustrative estimate at constant rents, expenses and appreciation rate — excluding inflation, market cycles and resale tax (detailed above).",
+  proj_note: "Assumptions: property value +{apprec} %/year, rents indexed +{infl} %/year, constant expenses. Illustrative — excluding market cycles and resale tax (detailed above).",
   btn_calc: "Calculate",
 
   err_price: "Enter a valid price (minimum €10,000)",
@@ -1672,6 +1693,7 @@ I18N.en = {
   scen_title: "Annual rental cash flow",
   scen_min: "Min.", scen_real: "Realistic", scen_max: "Max.",
   r_gross: "Gross rent", r_vacancy: "− Vacancy", r_net_rent: "Rent collected",
+  vacancy_info: "Periods when the property sits empty between tenants. We apply an average vacancy rate (editable in step 4): rent calculated over 12 full months is theoretical.",
   r_mortgage: "− Mortgage", r_community: "− Community fees", r_ibi: "− IBI",
   r_ins: "− Insurance", r_mgmt: "− Management", r_unpaid: "− Rent default ins.",
   r_irnr: "− IRNR (19 %)", r_cf_year: "Annual cash flow", r_cf_month: "Monthly cash flow",
@@ -2026,7 +2048,8 @@ I18N.es = {
   resale_price: "Precio de reventa", resale_gain: "Plusvalía estimada", resale_gain_hint: "Precio de reventa − inversión total inicial",
   resale_tax: "Impuesto sobre la plusvalía (IRNR)", resale_withholding: "Retención en la venta", resale_withholding_hint: "Retenida por el comprador, ingresada a Hacienda en tu nombre",
   resale_balance_due: "Saldo a pagar a Hacienda", resale_balance_refund: "Saldo a recuperar de Hacienda",
-  f_apprec: "Revalorización anual", f_apprec_hint: "Hipótesis para la proyección de valor a 20 años.",
+  sub_projection: "Hipótesis de proyección (20 años)",
+  f_apprec: "Revalorización del inmueble", f_rentinfl: "Inflación de la renta", f_apprec_hint: "Hipótesis anuales para el balance patrimonial a 20 años.",
   ppm2_label: "Precio pagado: {u}/m² · media orientativa en {city}: {c}/m² —",
   ppm2_below: "por debajo del mercado, a priori una buena oportunidad.",
   ppm2_around: "en línea con el mercado.",
@@ -2037,7 +2060,7 @@ I18N.es = {
   proj_equity_full: "En 20 años, tu patrimonio neto alcanza <strong>{e}</strong> — el inmueble vale {v} y solo quedan {d} de deuda. El inquilino habrá amortizado gran parte de tu hipoteca.",
   proj_equity_cash: "En 20 años, el inmueble valdría unos <strong>{v}</strong>, una plusvalía estimada de <strong>{g}</strong>.",
   proj_return: "Balance neto a 20 años: unos <strong>{ng}</strong> — patrimonio final {e} + cash-flow acumulado {cf} − aportación inicial {a}.",
-  proj_note: "Estimación ilustrativa con rentas, gastos y tipo de revalorización constantes — sin inflación, ciclos de mercado ni fiscalidad de reventa (detallada arriba).",
+  proj_note: "Hipótesis: valor del inmueble +{apprec} %/año, rentas indexadas +{infl} %/año, gastos constantes. Ilustrativo — sin ciclos de mercado ni fiscalidad de reventa (detallada arriba).",
   btn_calc: "Calcular",
 
   err_price: "Introduce un precio válido (mínimo 10.000 €)",
@@ -2057,6 +2080,7 @@ I18N.es = {
   scen_title: "Cash flow anual del alquiler",
   scen_min: "Mín.", scen_real: "Realista", scen_max: "Máx.",
   r_gross: "Rentas brutas", r_vacancy: "− Vacancia", r_net_rent: "Rentas cobradas",
+  vacancy_info: "Periodos en los que la vivienda queda vacía entre inquilinos. Aplicamos una vacancia media (editable en el paso 4): una renta calculada sobre 12 meses completos es teórica.",
   r_mortgage: "− Hipoteca", r_community: "− Comunidad", r_ibi: "− IBI",
   r_ins: "− Seguros", r_mgmt: "− Gestión", r_unpaid: "− Seguro de impago",
   r_irnr: "− IRNR (19 %)", r_cf_year: "Cash flow anual", r_cf_month: "Cash flow mensual",
@@ -2505,6 +2529,19 @@ function fmtS(n) {
 function pct(n, d = 2) {
   return new Intl.NumberFormat(T._locale, { minimumFractionDigits:d, maximumFractionDigits:d }).format(n) + ' %';
 }
+/* Versions « PDF-safe » : la police helvetica de jsPDF ne gère pas l'espace fine
+   insécable (U+202F) utilisée par Intl comme séparateur de milliers → on la remplace
+   par une espace normale (sinon « 7 700 € » s'affiche « 7/700 € » et casse l'alignement). */
+const pdfSafe = s => String(s).replace(/[   ]/g, ' ');
+function fmtPDF(n)   { return pdfSafe(fmt(n)); }
+function fmtSPDF(n)  { return pdfSafe(fmtS(n)); }
+function pctPDF(n, d){ return pdfSafe(pct(n, d)); }
+/* Nettoie TOUT texte ecrit dans un PDF (montants ET libelles i18n) */
+function pdfSafeDoc(doc) {
+  const orig = doc.text.bind(doc);
+  doc.text = (txt, ...rest) => orig(Array.isArray(txt) ? txt.map(pdfSafe) : pdfSafe(txt), ...rest);
+  return doc;
+}
 
 function toggleMortgage() {
   const tg = $('tg-mortgage');
@@ -2904,13 +2941,23 @@ function calculate() {
   }
   const value20 = series[H].value, bal20 = series[H].bal, equity20 = series[H].equity;
   const capitalGain20 = value20 - price;
+  /* Cash-flow cumulé : loyers indexés à l'inflation, coûts constants, prêt éteint à son terme */
+  const rentInfl = num('rentInflation') / 100;
   let cumCF = 0;
   for (let y = 1; y <= H; y++) {
+    const gross = real.gross * Math.pow(1 + rentInfl, y - 1);
+    const vacancy = gross * vacPct, collected = gross - vacancy;
+    const mgmt = collected * mgmtPct, unpaid = collected * unpaidPct;
     const mortActive = mort && y <= loanYears;
-    cumCF += real.cfYear + (mort && !mortActive ? real.mortgageY : 0);
+    const mortgageY = mortActive ? real.mortgageY : 0;
+    const deductibles = hasDeduct()
+      ? community + ibi + insurance + mgmt + unpaid + (mortActive ? interestY1 : 0) + (works * 0.03) + (furniture * 0.10)
+      : 0;
+    const irnr = Math.max(collected - deductibles, 0) * IRNR_RATE;
+    cumCF += collected - mortgageY - community - ibi - insurance - mgmt - unpaid - irnr;
   }
   const projection = {
-    rate: num('apprecRate'), mort, series, value20, bal20, equity20,
+    rate: num('apprecRate'), rentInfl: num('rentInflation'), mort, series, value20, bal20, equity20,
     capitalGain20, cumCF, apport: cashNeeded,
     netGain: equity20 + cumCF - cashNeeded   // bilan réel : patrimoine final + cash-flow cumulé − apport
   };
@@ -2978,6 +3025,8 @@ function render(d) {
   c.style.display = 'block';
 
   const typeLabel = d.isVPO ? T.f_type_vpo : d.isNew ? T.f_type_new : T.f_type_old;
+  const infoDot = desc => `<button class="tip tip-auto" type="button" aria-label="?" onclick="event.stopPropagation();toggleTip(this)">i<span class="tip-pop">${desc}</span></button>`;
+  const mainTaxDesc = (d.isNew || d.isVPO) ? (d.region.igic && !d.isVPO ? T.t_igic_d : T.t_iva_d) : T.t_itp_d;
   const row = (name, detail, amount, badge, bclass) => `
     <div class="brow">
       <div><div class="bname">${name}${badge ? `<span class="bbadge ${bclass}">${badge}</span>` : ''}</div>
@@ -3006,7 +3055,7 @@ function render(d) {
 
     <div class="bsec">
       <div class="card-eyebrow" style="margin-bottom:8px">${T.sec_taxes}</div>
-      ${row(d.mainTaxName, d.mainTaxDetail, d.mainTax, T.badge_req, 'bb-req')}
+      ${row(d.mainTaxName + infoDot(mainTaxDesc), d.mainTaxDetail, d.mainTax, T.badge_req, 'bb-req')}
       ${d.hasAJD ? row(T.t_ajd_n, pct(d.region.ajd * 100), d.ajd, T.badge_req, 'bb-req') : ''}
     </div>
 
@@ -3043,7 +3092,7 @@ function render(d) {
         <thead><tr><th></th><th>${T.scen_min}</th><th>${T.scen_real}</th><th>${T.scen_max}</th></tr></thead>
         <tbody>
           ${line(T.r_gross, s => s.gross)}
-          ${line(T.r_vacancy, s => -s.vacancy)}
+          ${line(T.r_vacancy + infoDot(T.vacancy_info), s => -s.vacancy)}
           ${line(T.r_net_rent, s => s.collected, 'hl')}
           ${d.mort ? line(T.r_mortgage, s => -s.mortgageY) : ''}
           ${line(T.r_community, () => -d.community)}
@@ -3098,7 +3147,7 @@ function render(d) {
       </div>
       <p class="proj-summary">${eqSentence}</p>
       <p class="proj-summary">${retSentence}</p>
-      <p class="proj-note">${T.proj_note}</p>
+      <p class="proj-note">${T.proj_note.replace('{apprec}', pj.rate).replace('{infl}', pj.rentInfl)}</p>
     </div>`;
     })() : ''}
 
@@ -3142,8 +3191,9 @@ function render(d) {
    ============================================================ */
 function makePDF() {
   const d = lastCalc; if (!d) return;
+  const fmt = fmtPDF, fmtS = fmtSPDF, pct = pctPDF;   // formats compatibles avec la police du PDF
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const doc = pdfSafeDoc(new jsPDF({ unit:'mm', format:'a4' }));
   const NAVY=[27,46,75], GOLD=[197,155,71], GRAY=[105,104,98], BLACK=[30,29,24], GREEN=[21,128,61], RED=[185,28,28];
   const now = new Date().toLocaleDateString(T._locale, { day:'2-digit', month:'long', year:'numeric' });
 
@@ -3269,7 +3319,7 @@ function makePDF() {
 
 function makeChecklistPDF() {
   const { jsPDF } = window.jspdf;
-  const doc = new jsPDF({ unit:'mm', format:'a4' });
+  const doc = pdfSafeDoc(new jsPDF({ unit:'mm', format:'a4' }));
   const NAVY=[27,46,75], GOLD=[203,160,70], GRAY=[105,104,98], BLACK=[30,29,24];
   const now = new Date().toLocaleDateString(T._locale, { day:'2-digit', month:'long', year:'numeric' });
 
@@ -3316,13 +3366,46 @@ $('monthly').addEventListener('dblclick', () => { monthlyManual = false; recalcM
 $('region').addEventListener('change', recalcDefaults);
 document.querySelectorAll('input[name=ptype]').forEach(r => r.addEventListener('change', recalcDefaults));
 
-/* Datalist des villes + auto-remplissage de la région à partir de la ville */
-$('city-list').innerHTML = CITIES.map(c => `<option value="${c.n}">`).join('');
-$('city').addEventListener('input', () => {
-  const c = cityLookup($('city').value);
-  if (c && $('region').value !== c.r) $('region').value = c.r;
-  recalcDefaults();
-});
+/* Autocomplétion ville maison : la liste n'apparaît qu'à partir de la saisie (pas au clic).
+   Choisir une ville pré-remplit la région. */
+(function cityAutocomplete() {
+  const input = $('city'), list = $('city-ac');
+  let matches = [], active = -1;
+
+  const close = () => { list.classList.remove('open'); input.setAttribute('aria-expanded', 'false'); active = -1; };
+  const pick = c => {
+    input.value = c.n;
+    if ($('region').value !== c.r) $('region').value = c.r;
+    close(); recalcDefaults();
+  };
+  const render = () => {
+    if (!matches.length) { close(); return; }
+    list.innerHTML = matches.map((c, i) =>
+      `<span class="ac-item${i === active ? ' active' : ''}" data-i="${i}"><span>${c.n}</span><span class="ac-region">${REGIONS[c.r].name}</span></span>`).join('');
+    list.classList.add('open'); input.setAttribute('aria-expanded', 'true');
+  };
+
+  input.addEventListener('input', () => {
+    const q = cityNorm(input.value);
+    matches = q.length >= 1 ? CITIES.filter(c => cityNorm(c.n).includes(q)).slice(0, 8) : [];
+    active = -1; render();
+    const exact = cityLookup(input.value);      // frappe complète = maj région/loyer en direct
+    if (exact && $('region').value !== exact.r) $('region').value = exact.r;
+    recalcDefaults();
+  });
+  input.addEventListener('keydown', e => {
+    if (!list.classList.contains('open')) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); active = Math.min(active + 1, matches.length - 1); render(); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); active = Math.max(active - 1, 0); render(); }
+    else if (e.key === 'Enter' && active >= 0) { e.preventDefault(); pick(matches[active]); }
+    else if (e.key === 'Escape') close();
+  });
+  list.addEventListener('mousedown', e => {           // mousedown avant le blur
+    const it = e.target.closest('.ac-item');
+    if (it) { e.preventDefault(); pick(matches[+it.dataset.i]); }
+  });
+  input.addEventListener('blur', () => setTimeout(close, 120));
+})();
 
 document.querySelectorAll('input[name=simmode]').forEach(r => r.addEventListener('change', () => {
   const budgetMode = simMode() === 'budget';
