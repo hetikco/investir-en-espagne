@@ -536,9 +536,14 @@ input[type=number] { -moz-appearance: textfield; }
 .sa-warn { background: var(--amber-bg); border: 1px solid #FDE68A; color: var(--amber); }
 .sa-info { background: var(--blue-bg); border: 1px solid #BFDBFE; color: var(--blue); }
 .sa-good { background: var(--green-bg); border: 1px solid #BBF7D0; color: #166534; }
-.proj-summary { font-size: 12.5px; color: var(--gray-700); line-height: 1.55; margin-top: 10px; }
+.proj-summary { font-size: 12.5px; color: var(--gray-700); line-height: 1.55; margin-top: 8px; }
 .proj-summary strong { color: var(--green); }
-.proj-note { font-size: 10.5px; color: var(--gray-500); margin-top: 4px; }
+.proj-note { font-size: 10.5px; color: var(--gray-500); margin-top: 6px; }
+.proj-legend { display: flex; gap: 16px; justify-content: center; margin-top: 4px; }
+.proj-lg { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-700); }
+.proj-sw { width: 11px; height: 11px; border-radius: 3px; }
+.proj-sw-eq { background: rgba(21,128,61,.55); }
+.proj-sw-debt { background: rgba(138,137,128,.5); }
 
 .btn-pdf {
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -1249,10 +1254,13 @@ I18N.fr = {
   ppm2_below: "sous le marché, a priori une bonne affaire.",
   ppm2_around: "dans la moyenne du marché.",
   ppm2_above: "au-dessus du marché — à négocier ou à justifier (état, étage, emplacement).",
-  proj_title: "Projection de valeur sur 20 ans",
-  proj_x_past: "il y a 20 ans", proj_x_now: "achat", proj_x_future: "dans 20 ans",
-  proj_gain: "À {r} %/an, le bien vaudrait environ <strong>{v}</strong> dans 20 ans, soit une plus-value estimée de <strong>{g}</strong> ({p}).",
-  proj_note: "Projection à taux constant, hors inflation et cycles de marché — purement illustratif. La fiscalité de la plus-value est détaillée dans la simulation de revente ci-dessus.",
+  proj_title: "Votre patrimoine sur 20 ans",
+  proj_x_now: "aujourd'hui", proj_x_mid: "+10 ans", proj_x_future: "+20 ans",
+  proj_legend_equity: "Patrimoine net", proj_legend_debt: "Capital restant dû",
+  proj_equity_full: "Dans 20 ans, votre patrimoine net atteint <strong>{e}</strong> — le bien vaut {v} et il ne reste que {d} de dette. Le locataire aura remboursé une grande partie de votre crédit.",
+  proj_equity_cash: "Dans 20 ans, le bien vaudrait environ <strong>{v}</strong>, soit une plus-value estimée de <strong>{g}</strong>.",
+  proj_return: "Bilan net sur 20 ans : environ <strong>{ng}</strong> — patrimoine final {e} + cash-flow locatif cumulé {cf} − apport de départ {a}.",
+  proj_note: "Estimation illustrative à loyers, charges et taux d'appréciation constants — hors inflation, cycles de marché et fiscalité de revente (détaillée ci-dessus).",
   btn_calc: "Calculer",
 
   err_price: "Saisissez un prix valide (minimum 10 000 €)",
@@ -1638,10 +1646,13 @@ I18N.en = {
   ppm2_below: "below market, likely a good deal.",
   ppm2_around: "in line with the market.",
   ppm2_above: "above market — negotiate or justify (condition, floor, location).",
-  proj_title: "20-year value projection",
-  proj_x_past: "20 years ago", proj_x_now: "purchase", proj_x_future: "in 20 years",
-  proj_gain: "At {r} %/year, the property would be worth around <strong>{v}</strong> in 20 years, an estimated capital gain of <strong>{g}</strong> ({p}).",
-  proj_note: "Constant-rate projection, excluding inflation and market cycles — purely illustrative. Capital gains tax is detailed in the resale simulation above.",
+  proj_title: "Your wealth over 20 years",
+  proj_x_now: "today", proj_x_mid: "+10 years", proj_x_future: "+20 years",
+  proj_legend_equity: "Net equity", proj_legend_debt: "Remaining loan",
+  proj_equity_full: "In 20 years, your net equity reaches <strong>{e}</strong> — the property is worth {v} with only {d} of debt left. The tenant will have repaid much of your mortgage.",
+  proj_equity_cash: "In 20 years, the property would be worth around <strong>{v}</strong>, an estimated capital gain of <strong>{g}</strong>.",
+  proj_return: "Net result over 20 years: around <strong>{ng}</strong> — final equity {e} + cumulative rental cash-flow {cf} − initial cash in {a}.",
+  proj_note: "Illustrative estimate at constant rents, expenses and appreciation rate — excluding inflation, market cycles and resale tax (detailed above).",
   btn_calc: "Calculate",
 
   err_price: "Enter a valid price (minimum €10,000)",
@@ -2020,10 +2031,13 @@ I18N.es = {
   ppm2_below: "por debajo del mercado, a priori una buena oportunidad.",
   ppm2_around: "en línea con el mercado.",
   ppm2_above: "por encima del mercado — a negociar o justificar (estado, planta, ubicación).",
-  proj_title: "Proyección de valor a 20 años",
-  proj_x_past: "hace 20 años", proj_x_now: "compra", proj_x_future: "en 20 años",
-  proj_gain: "Al {r} %/año, el inmueble valdría unos <strong>{v}</strong> dentro de 20 años, una plusvalía estimada de <strong>{g}</strong> ({p}).",
-  proj_note: "Proyección a tipo constante, sin inflación ni ciclos de mercado — puramente ilustrativo. La fiscalidad de la plusvalía se detalla en la simulación de reventa de arriba.",
+  proj_title: "Tu patrimonio a 20 años",
+  proj_x_now: "hoy", proj_x_mid: "+10 años", proj_x_future: "+20 años",
+  proj_legend_equity: "Patrimonio neto", proj_legend_debt: "Capital pendiente",
+  proj_equity_full: "En 20 años, tu patrimonio neto alcanza <strong>{e}</strong> — el inmueble vale {v} y solo quedan {d} de deuda. El inquilino habrá amortizado gran parte de tu hipoteca.",
+  proj_equity_cash: "En 20 años, el inmueble valdría unos <strong>{v}</strong>, una plusvalía estimada de <strong>{g}</strong>.",
+  proj_return: "Balance neto a 20 años: unos <strong>{ng}</strong> — patrimonio final {e} + cash-flow acumulado {cf} − aportación inicial {a}.",
+  proj_note: "Estimación ilustrativa con rentas, gastos y tipo de revalorización constantes — sin inflación, ciclos de mercado ni fiscalidad de reventa (detallada arriba).",
   btn_calc: "Calcular",
 
   err_price: "Introduce un precio válido (mínimo 10.000 €)",
@@ -2845,17 +2859,6 @@ function calculate() {
       deltaPct: city ? (userM2 - city.saleM2) / city.saleM2 * 100 : null, cityName: city ? city.n : null };
   }
 
-  /* --- Projection de valeur sur 20 ans (taux constant, illustratif) --- */
-  const apprec = num('apprecRate') / 100;
-  const projection = {
-    rate: num('apprecRate'),
-    past: price / Math.pow(1 + apprec, 20),
-    now: price,
-    future: price * Math.pow(1 + apprec, 20)
-  };
-  projection.gain = projection.future - price;
-  projection.gainPct = apprec ? (Math.pow(1 + apprec, 20) - 1) * 100 : 0;
-
   /* --- Charges annuelles --- */
   const community = num('community'), ibi = num('ibi');
   const insurance = num('homeIns') + (mort ? num('lifeIns') : 0);
@@ -2884,6 +2887,34 @@ function calculate() {
   const grossYield = real.gross / totalInvest * 100;
   const netYield = cashNeeded > 0 ? real.cfYear / cashNeeded * 100 : 0;
 
+  /* --- Projection patrimoine sur 20 ans (patrimoine net + rendement total, illustratif) --- */
+  const apprec = num('apprecRate') / 100;
+  const H = 20, loanRate = num('rate'), loanYears = num('years'), rm = loanRate / 100 / 12;
+  function balanceAtYear(y) {
+    if (!mort || loan <= 0 || y >= loanYears) return 0;
+    const k = y * 12;
+    if (rm === 0) return Math.max(loan - monthly * k, 0);
+    return Math.max(loan * Math.pow(1 + rm, k) - monthly * ((Math.pow(1 + rm, k) - 1) / rm), 0);
+  }
+  const series = [];
+  for (let y = 0; y <= H; y++) {
+    const value = price * Math.pow(1 + apprec, y);
+    const bal = balanceAtYear(y);
+    series.push({ y, value, bal, equity: value - bal });
+  }
+  const value20 = series[H].value, bal20 = series[H].bal, equity20 = series[H].equity;
+  const capitalGain20 = value20 - price;
+  let cumCF = 0;
+  for (let y = 1; y <= H; y++) {
+    const mortActive = mort && y <= loanYears;
+    cumCF += real.cfYear + (mort && !mortActive ? real.mortgageY : 0);
+  }
+  const projection = {
+    rate: num('apprecRate'), mort, series, value20, bal20, equity20,
+    capitalGain20, cumCF, apport: cashNeeded,
+    netGain: equity20 + cumCF - cashNeeded   // bilan réel : patrimoine final + cash-flow cumulé − apport
+  };
+
   const notes = [];
   if (region.note) notes.push(T[region.note]);
   if (hasDeduct()) notes.push(T.f_deduct_hint);
@@ -2907,32 +2938,33 @@ function runCalc() {
   if (lastCalc) requestAnimationFrame(() => $('res-content').scrollIntoView({ behavior: 'smooth', block: 'start' }));
 }
 
-/* Graphique SVG : valeur du bien de -20 ans à +20 ans (taux constant, illustratif) */
+/* Graphique SVG : patrimoine net (aire verte) empilé sur le capital restant dû (aire grise),
+   de aujourd'hui à +20 ans. Sommet = valeur du bien. */
 function projectionChart(p) {
-  const rate = p.rate / 100;
-  const W = 320, H = 148, padL = 6, padR = 6, padT = 22, padB = 34;
-  const ys = []; for (let t = -20; t <= 20; t++) ys.push(t);
-  const vals = ys.map(t => p.now * Math.pow(1 + rate, t));
-  const vmin = Math.min(...vals), vmax = Math.max(...vals);
-  const X = t => padL + (t + 20) / 40 * (W - padL - padR);
-  const Y = v => padT + (1 - (v - vmin) / ((vmax - vmin) || 1)) * (H - padT - padB);
-  const pts = ys.map((t, i) => `${X(t).toFixed(1)},${Y(vals[i]).toFixed(1)}`).join(' ');
-  const area = `${X(-20).toFixed(1)},${H - padB} ${pts} ${X(20).toFixed(1)},${H - padB}`;
-  const x0 = X(0).toFixed(1), baseY = H - padB;
-  const lbl = (t, v, anchor, dy) => `<text x="${X(t).toFixed(1)}" y="${(Y(v) + dy).toFixed(1)}" text-anchor="${anchor}" font-size="9" font-weight="700" fill="var(--navy)">${fmt(Math.round(v))}</text>`;
-  const xlbl = (t, s, anchor) => `<text x="${X(t).toFixed(1)}" y="${H - 8}" text-anchor="${anchor}" font-size="8.5" fill="var(--gray-500)">${s}</text>`;
+  const S = p.series;
+  const W = 320, H = 150, padL = 6, padR = 6, padT = 24, padB = 30;
+  const vmax = Math.max(...S.map(s => s.value)) || 1;
+  const X = y => padL + y / 20 * (W - padL - padR);
+  const Y = v => padT + (1 - v / vmax) * (H - padT - padB);
+  const base = (H - padB).toFixed(1);
+  const balLine = S.map(s => `${X(s.y).toFixed(1)},${Y(s.bal).toFixed(1)}`).join(' ');
+  const valLine = S.map(s => `${X(s.y).toFixed(1)},${Y(s.value).toFixed(1)}`).join(' ');
+  const balLineRev = S.slice().reverse().map(s => `${X(s.y).toFixed(1)},${Y(s.bal).toFixed(1)}`).join(' ');
+  const balArea = `${X(0).toFixed(1)},${base} ${balLine} ${X(20).toFixed(1)},${base}`;
+  const equityArea = `${valLine} ${balLineRev}`;
+  const lbl = (y, v, anchor, dy) => `<text x="${X(y).toFixed(1)}" y="${(Y(v) + dy).toFixed(1)}" text-anchor="${anchor}" font-size="9" font-weight="700" fill="var(--navy)">${fmt(Math.round(v))}</text>`;
+  const xlbl = (y, s, anchor) => `<text x="${X(y).toFixed(1)}" y="${H - 8}" text-anchor="${anchor}" font-size="8.5" fill="var(--gray-500)">${s}</text>`;
   return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block" role="img" aria-label="${T.proj_title}">
-    <polygon points="${area}" fill="rgba(21,128,61,.10)"/>
-    <polyline points="${pts}" fill="none" stroke="var(--green)" stroke-width="2"/>
-    <line x1="${x0}" y1="${padT - 4}" x2="${x0}" y2="${baseY}" stroke="var(--gray-300)" stroke-dasharray="3 3"/>
-    <circle cx="${X(-20).toFixed(1)}" cy="${Y(p.past).toFixed(1)}" r="3" fill="var(--gray-500)"/>
-    <circle cx="${x0}" cy="${Y(p.now).toFixed(1)}" r="4.5" fill="var(--navy)"/>
-    <circle cx="${X(20).toFixed(1)}" cy="${Y(p.future).toFixed(1)}" r="3.5" fill="var(--green)"/>
-    ${lbl(-20, p.past, 'start', -6)}
-    ${lbl(0, p.now, 'middle', -8)}
-    ${lbl(20, p.future, 'end', -6)}
-    ${xlbl(-20, T.proj_x_past, 'start')}
-    ${xlbl(0, T.proj_x_now, 'middle')}
+    <polygon points="${equityArea}" fill="rgba(21,128,61,.14)"/>
+    ${p.mort && p.bal20 >= 0 && S[0].bal > 0 ? `<polygon points="${balArea}" fill="rgba(138,137,128,.22)"/>
+    <polyline points="${balLine}" fill="none" stroke="var(--gray-500)" stroke-width="1.5" stroke-dasharray="2 2"/>` : ''}
+    <polyline points="${valLine}" fill="none" stroke="var(--green)" stroke-width="2"/>
+    <circle cx="${X(0).toFixed(1)}" cy="${Y(S[0].value).toFixed(1)}" r="3.5" fill="var(--navy)"/>
+    <circle cx="${X(20).toFixed(1)}" cy="${Y(p.value20).toFixed(1)}" r="3.5" fill="var(--green)"/>
+    ${lbl(0, S[0].value, 'start', -6)}
+    ${lbl(20, p.value20, 'end', -6)}
+    ${xlbl(0, T.proj_x_now, 'start')}
+    ${xlbl(10, T.proj_x_mid, 'middle')}
     ${xlbl(20, T.proj_x_future, 'end')}
   </svg>`;
 }
@@ -3049,13 +3081,26 @@ function render(d) {
       return `<div class="sim-alert ${cls}">📍 ${T.ppm2_label.replace('{u}', fmt(Math.round(p.userM2))).replace('{city}', p.cityName).replace('{c}', fmt(p.cityM2))} <strong>${verdict}</strong> (${dp >= 0 ? '+' : ''}${pct(dp, 0)})</div>`;
     })() : ''}
 
-    ${d.projection && d.price > 0 ? `
+    ${d.projection && d.price > 0 ? (() => {
+      const pj = d.projection;
+      const showDebt = pj.mort && pj.series[0].bal > 0;
+      const eqSentence = showDebt
+        ? T.proj_equity_full.replace('{e}', fmt(Math.round(pj.equity20))).replace('{v}', fmt(Math.round(pj.value20))).replace('{d}', fmt(Math.round(pj.bal20)))
+        : T.proj_equity_cash.replace('{v}', fmt(Math.round(pj.value20))).replace('{g}', fmt(Math.round(pj.capitalGain20)));
+      const retSentence = T.proj_return.replace('{ng}', fmtS(Math.round(pj.netGain))).replace('{e}', fmt(Math.round(pj.equity20))).replace('{cf}', fmtS(Math.round(pj.cumCF))).replace('{a}', fmt(Math.round(pj.apport)));
+      return `
     <div class="bsec">
       <div class="card-eyebrow" style="margin-bottom:8px">${T.proj_title}</div>
-      ${projectionChart(d.projection)}
-      <p class="proj-summary">${T.proj_gain.replace('{r}', d.projection.rate).replace('{v}', fmt(Math.round(d.projection.future))).replace('{g}', fmt(Math.round(d.projection.gain))).replace('{p}', (d.projection.gainPct>=0?'+':'')+pct(d.projection.gainPct, 0))}</p>
+      ${projectionChart(pj)}
+      <div class="proj-legend">
+        <span class="proj-lg"><span class="proj-sw proj-sw-eq"></span>${T.proj_legend_equity}</span>
+        ${showDebt ? `<span class="proj-lg"><span class="proj-sw proj-sw-debt"></span>${T.proj_legend_debt}</span>` : ''}
+      </div>
+      <p class="proj-summary">${eqSentence}</p>
+      <p class="proj-summary">${retSentence}</p>
       <p class="proj-note">${T.proj_note}</p>
-    </div>` : ''}
+    </div>`;
+    })() : ''}
 
     ${d.resale ? `
     <div class="bsec">
