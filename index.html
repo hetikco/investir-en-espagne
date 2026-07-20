@@ -668,7 +668,7 @@ input[type=number] { -moz-appearance: textfield; }
       <h3 data-i18n="interest_title"></h3>
       <p data-i18n="interest_sub"></p>
       <form class="interest-form" id="interest-form">
-        <input type="email" id="interest-email" name="email" required>
+        <input type="email" id="interest-email" name="email">
         <input type="text" name="_gotcha" class="sr" tabindex="-1" autocomplete="off">
         <button type="submit" class="btn" data-i18n="interest_btn"></button>
       </form>
@@ -3433,23 +3433,15 @@ fillContactLinks();
 
 $('interest-form').addEventListener('submit', async e => {
   e.preventDefault();
-  const btn = e.target.querySelector('button');
   const msg = $('interest-msg');
-  btn.disabled = true;
-  try {
-    const res = await fetch(FORMSPREE_URL, {
-      method: 'POST',
-      headers: { 'Accept': 'application/json' },
-      body: new FormData(e.target)
-    });
-    msg.textContent = res.ok ? T.interest_success : T.interest_error;
-    msg.className = 'interest-msg show ' + (res.ok ? 'ok' : 'err');
-    if (res.ok) { e.target.reset(); makeChecklistPDF(); }
-  } catch (err) {
-    msg.textContent = T.interest_error;
-    msg.className = 'interest-msg show err';
+  makeChecklistPDF();                       // le PDF se télécharge toujours
+  msg.textContent = T.interest_success;
+  msg.className = 'interest-msg show ok';
+  // Capture de l'email uniquement si Formspree est configuré (sans bloquer le téléchargement)
+  if (!FORMSPREE_URL.includes('YOUR_FORM_ID')) {
+    try { await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(e.target) }); } catch (err) {}
   }
-  btn.disabled = false;
+  e.target.reset();
 });
 
 (function init() {
