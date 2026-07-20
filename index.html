@@ -205,6 +205,20 @@ body {
 .about-contact a { color: var(--navy); font-weight: 600; text-decoration: none; }
 .about-contact a:hover { text-decoration: underline; }
 
+.why-block { margin-top: 28px; background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow-sm); }
+.why-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); margin-bottom: 8px; }
+.why-title { font-family: var(--font-title); font-size: 20px; font-weight: 600; color: var(--gray-900); margin-bottom: 20px; letter-spacing: -.01em; line-height: 1.3; }
+.why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
+@media (max-width: 640px) { .why-grid { grid-template-columns: 1fr; } }
+.why-item { display: flex; gap: 12px; align-items: flex-start; }
+.why-ico { font-size: 22px; line-height: 1.2; flex-shrink: 0; }
+.why-it { font-size: 14px; font-weight: 700; color: var(--gray-900); margin-bottom: 3px; }
+.why-id { font-size: 12.5px; color: var(--gray-700); line-height: 1.55; }
+.why-note { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gray-100); font-size: 13px; color: var(--gray-700); font-style: italic; }
+.home-fresh { margin-top: 16px; text-align: center; font-size: 11.5px; color: var(--gray-500); line-height: 1.6; }
+.home-fresh a { color: var(--navy); text-decoration: none; }
+.home-fresh a:hover { text-decoration: underline; }
+
 /* ---------- SECTION HEAD ---------- */
 .sec-head { background: var(--navy); padding: 38px 20px 44px; text-align: center; }
 .sec-head-inner { max-width: 680px; margin: 0 auto; }
@@ -655,6 +669,18 @@ input[type=number] { -moz-appearance: textfield; }
       </div>
     </div>
 
+    <div class="why-block">
+      <div class="why-eyebrow" data-i18n="why_eyebrow"></div>
+      <h2 class="why-title" data-i18n="why_title"></h2>
+      <div class="why-grid">
+        <div class="why-item"><div class="why-ico">📈</div><div><div class="why-it" data-i18n="why_1_t"></div><p class="why-id" data-i18n="why_1_d"></p></div></div>
+        <div class="why-item"><div class="why-ico">🏛️</div><div><div class="why-it" data-i18n="why_2_t"></div><p class="why-id" data-i18n="why_2_d"></p></div></div>
+        <div class="why-item"><div class="why-ico">🔑</div><div><div class="why-it" data-i18n="why_3_t"></div><p class="why-id" data-i18n="why_3_d"></p></div></div>
+        <div class="why-item"><div class="why-ico">🌍</div><div><div class="why-it" data-i18n="why_4_t"></div><p class="why-id" data-i18n="why_4_d"></p></div></div>
+      </div>
+      <p class="why-note" data-i18n="why_note"></p>
+    </div>
+
     <div class="about-block">
       <div class="about-badge" data-i18n="about_eyebrow"></div>
       <h2 data-i18n="about_title"></h2>
@@ -666,6 +692,8 @@ input[type=number] { -moz-appearance: textfield; }
     </div>
 
     <div class="home-note" data-i18n-html="home_note"></div>
+
+    <p class="home-fresh" data-i18n-html="trust_fresh"></p>
 
     <div class="guide-cta interest-cta" id="interest-cta">
       <h3 data-i18n="interest_title"></h3>
@@ -1164,7 +1192,7 @@ I18N.fr = {
   nav_faq: "FAQ", nav_glossary: "Glossaire", nav_legal: "Mentions légales",
 
   home_h1: "Acheter en Espagne, <em>sans mauvaise surprise</em>",
-  home_sub: "Le parcours complet d'un achat immobilier en Espagne depuis la France, et le simulateur qui calcule vos frais réels et votre rentabilité.",
+  home_sub: "Se constituer un patrimoine au soleil, avec un rendement souvent supérieur à la France et des coûts de détention plus bas — à condition de connaître les vrais chiffres. Le guide complet et le simulateur qui les calcule pour vous, gratuitement.",
   home_stat1_v: "+32 %", home_stat1_l: "que le prix affiché vous cache",
   home_stat2_v: "2 min", home_stat2_l: "pour connaître votre coût réel",
   home_stat3_v: "Gratuit", home_stat3_l: "sans inscription",
@@ -1186,6 +1214,20 @@ I18N.fr = {
   home_c2_btn: "Lancer une simulation →",
 
   home_note: "<strong>Pourquoi ce site ?</strong> Parce qu'entre le prix affiché sur Idealista et ce que vous payez réellement, il y a un écart de 25 à 35 %. Taxes régionales, notaire, agence, travaux, courtier, déplacements — personne ne vous les présente au même endroit. Et une fois propriétaire, la fiscalité espagnole des non-résidents surprend encore. Ce guide et ce simulateur rassemblent tout, en français, gratuitement.",
+
+  why_eyebrow: "Pourquoi l'Espagne",
+  why_title: "Un patrimoine qui coûte moins cher à détenir qu'en France",
+  why_1_t: "Rendement locatif souvent supérieur",
+  why_1_d: "Sur beaucoup de villes espagnoles, le rapport loyer / prix d'achat dépasse celui des grandes villes françaises. Le simulateur vous donne le rendement net réel, après IRNR, vacance et charges — pas le rendement brut vendeur.",
+  why_2_t: "Coût de détention réduit",
+  why_2_d: "L'IBI (l'équivalent de la taxe foncière) est généralement 3 à 4 fois inférieur à la taxe foncière française. Aucun équivalent de la taxe d'habitation, et des charges de copropriété souvent 2 à 3 fois plus basses.",
+  why_3_t: "Un marché porteur",
+  why_3_d: "Près de 93 000 logements achetés par des étrangers en Espagne en 2024, et une demande française en hausse. Selon les régions, les prix progressent de 3 à 9 % par an.",
+  why_4_t: "Diversifier hors de France",
+  why_4_d: "Un actif dans une autre économie et une autre fiscalité, avec un cadre de vie qui compte aussi — sans quitter la zone euro ni le marché unique européen.",
+  why_note: "Tout l'enjeu tient en une phrase : connaître les vrais chiffres avant de se lancer. C'est exactement ce que fait ce simulateur — gratuitement, et sans rien vous vendre.",
+
+  trust_fresh: "✓ Barèmes fiscaux à jour au 07/2026 · Sources : <a href=\"https://sede.agenciatributaria.gob.es\" target=\"_blank\" rel=\"noopener\">Agencia Tributaria</a>, hacienda de chaque communauté autonome, et convention fiscale franco-espagnole de 1995.",
 
   about_eyebrow: "Qui sommes-nous",
   about_title: "Un outil indépendant, pas une agence",
