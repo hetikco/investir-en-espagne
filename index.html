@@ -548,6 +548,9 @@ input[type=number] { -moz-appearance: textfield; }
 .proj-summary { font-size: 12.5px; color: var(--gray-700); line-height: 1.55; margin-top: 8px; }
 .proj-summary strong { color: var(--green); }
 .proj-note { font-size: 10.5px; color: var(--gray-500); margin-top: 6px; }
+.cf-evo-note { font-size: 12.5px; font-weight: 600; margin-top: 8px; }
+.cf-evo-note.pos { color: var(--green); }
+.cf-evo-note.neg { color: #B23A2E; }
 .proj-legend { display: flex; gap: 16px; justify-content: center; margin-top: 4px; }
 .proj-lg { display: inline-flex; align-items: center; gap: 5px; font-size: 11px; color: var(--gray-700); }
 .proj-sw { width: 11px; height: 11px; border-radius: 3px; }
@@ -1280,6 +1283,11 @@ I18N.fr = {
   proj_equity_cash: "Dans 20 ans, le bien vaudrait environ <strong>{v}</strong>, soit une plus-value estimée de <strong>{g}</strong>.",
   proj_return: "Bilan net sur 20 ans : environ <strong>{ng}</strong> — patrimoine final {e} + cash-flow locatif cumulé {cf} − apport de départ {a}.",
   proj_note: "Hypothèses : valeur du bien +{apprec} %/an, loyers indexés +{infl} %/an, charges constantes. Illustratif — hors cycles de marché et fiscalité de revente (détaillée ci-dessus).",
+  cf_evo_title: "Votre cash-flow mensuel dans le temps", cf_evo_now: "aujourd'hui", cf_evo_yr: "+{n} ans",
+  cf_evo_be: "🟢 Cash-flow positif dès l'année {n} — le loyer finit par dépasser les charges.",
+  cf_evo_be1: "🟢 Cash-flow positif dès la 1re année, et il grimpe avec les loyers.",
+  cf_evo_neg: "À ces hypothèses, le cash-flow reste négatif sur 20 ans — mais il remonte chaque année avec les loyers.",
+  cf_evo_hint: "Loyers indexés +{infl} %/an, charges et mensualité de prêt constantes. Après remboursement du prêt, le cash-flow bondit encore.",
   btn_calc: "Calculer",
 
   err_price: "Saisissez un prix valide (minimum 10 000 €)",
@@ -1674,6 +1682,11 @@ I18N.en = {
   proj_equity_cash: "In 20 years, the property would be worth around <strong>{v}</strong>, an estimated capital gain of <strong>{g}</strong>.",
   proj_return: "Net result over 20 years: around <strong>{ng}</strong> — final equity {e} + cumulative rental cash-flow {cf} − initial cash in {a}.",
   proj_note: "Assumptions: property value +{apprec} %/year, rents indexed +{infl} %/year, constant expenses. Illustrative — excluding market cycles and resale tax (detailed above).",
+  cf_evo_title: "Your monthly cash flow over time", cf_evo_now: "today", cf_evo_yr: "+{n}y",
+  cf_evo_be: "🟢 Positive cash flow from year {n} — rent eventually outgrows the costs.",
+  cf_evo_be1: "🟢 Positive cash flow from year 1, and it keeps rising with rents.",
+  cf_evo_neg: "Under these assumptions, cash flow stays negative over 20 years — but it climbs every year as rents rise.",
+  cf_evo_hint: "Rents indexed +{infl} %/year, expenses and loan payment constant. Once the loan is repaid, cash flow jumps again.",
   btn_calc: "Calculate",
 
   err_price: "Enter a valid price (minimum €10,000)",
@@ -2061,6 +2074,11 @@ I18N.es = {
   proj_equity_cash: "En 20 años, el inmueble valdría unos <strong>{v}</strong>, una plusvalía estimada de <strong>{g}</strong>.",
   proj_return: "Balance neto a 20 años: unos <strong>{ng}</strong> — patrimonio final {e} + cash-flow acumulado {cf} − aportación inicial {a}.",
   proj_note: "Hipótesis: valor del inmueble +{apprec} %/año, rentas indexadas +{infl} %/año, gastos constantes. Ilustrativo — sin ciclos de mercado ni fiscalidad de reventa (detallada arriba).",
+  cf_evo_title: "Tu cash flow mensual en el tiempo", cf_evo_now: "hoy", cf_evo_yr: "+{n} años",
+  cf_evo_be: "🟢 Cash flow positivo desde el año {n} — la renta acaba superando los gastos.",
+  cf_evo_be1: "🟢 Cash flow positivo desde el 1.er año, y sube con las rentas.",
+  cf_evo_neg: "Con estas hipótesis, el cash flow sigue negativo a 20 años — pero sube cada año con las rentas.",
+  cf_evo_hint: "Rentas indexadas +{infl} %/año, gastos y cuota del préstamo constantes. Tras amortizar el préstamo, el cash flow salta de nuevo.",
   btn_calc: "Calcular",
 
   err_price: "Introduce un precio válido (mínimo 10.000 €)",
@@ -2941,9 +2959,10 @@ function calculate() {
   }
   const value20 = series[H].value, bal20 = series[H].bal, equity20 = series[H].equity;
   const capitalGain20 = value20 - price;
-  /* Cash-flow cumulé : loyers indexés à l'inflation, coûts constants, prêt éteint à son terme */
+  /* Cash-flow par année : loyers indexés à l'inflation, coûts constants, prêt éteint à son terme */
   const rentInfl = num('rentInflation') / 100;
-  let cumCF = 0;
+  let cumCF = 0, breakevenYear = null;
+  const cfByYear = [];   // cfByYear[y] = cash-flow annuel de l'année y (1..20)
   for (let y = 1; y <= H; y++) {
     const gross = real.gross * Math.pow(1 + rentInfl, y - 1);
     const vacancy = gross * vacPct, collected = gross - vacancy;
@@ -2954,11 +2973,14 @@ function calculate() {
       ? community + ibi + insurance + mgmt + unpaid + (mortActive ? interestY1 : 0) + (works * 0.03) + (furniture * 0.10)
       : 0;
     const irnr = Math.max(collected - deductibles, 0) * IRNR_RATE;
-    cumCF += collected - mortgageY - community - ibi - insurance - mgmt - unpaid - irnr;
+    const cf = collected - mortgageY - community - ibi - insurance - mgmt - unpaid - irnr;
+    cfByYear[y] = cf; cumCF += cf;
+    if (breakevenYear === null && cf >= 0) breakevenYear = y;
   }
+  const cfMilestones = [1, 5, 10, 15, 20].map(y => ({ y, cfMonth: cfByYear[y] / 12 }));
   const projection = {
     rate: num('apprecRate'), rentInfl: num('rentInflation'), mort, series, value20, bal20, equity20,
-    capitalGain20, cumCF, apport: cashNeeded,
+    capitalGain20, cumCF, apport: cashNeeded, cfMilestones, breakevenYear,
     netGain: equity20 + cumCF - cashNeeded   // bilan réel : patrimoine final + cash-flow cumulé − apport
   };
 
@@ -2983,6 +3005,35 @@ function calculate() {
 function runCalc() {
   calculate();
   if (lastCalc) requestAnimationFrame(() => $('res-content').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+}
+
+/* Graphique SVG : évolution du cash-flow mensuel (barres) à aujourd'hui / +5 / +10 / +15 / +20 ans.
+   Rouge sous zéro, vert au-dessus. Les loyers indexés à l'inflation font remonter les barres. */
+function cashflowChart(ms) {
+  const W = 340, H = 152, padL = 8, padR = 8, padT = 22, padB = 30;
+  const vals = ms.map(m => m.cfMonth);
+  const maxPos = Math.max(0, ...vals), minNeg = Math.min(0, ...vals);
+  const range = (maxPos - minNeg) || 1;
+  const plotH = H - padT - padB;
+  const zeroY = padT + (maxPos / range) * plotH;
+  const scale = plotH / range;
+  const n = ms.length, slot = (W - padL - padR) / n, bw = Math.min(44, slot * 0.58);
+  const bars = ms.map((m, i) => {
+    const cx = padL + slot * i + slot / 2;
+    const yv = zeroY - m.cfMonth * scale;
+    const pos = m.cfMonth >= 0;
+    const barY = pos ? yv : zeroY;
+    const barH = Math.max(Math.abs(zeroY - yv), 2);
+    const col = pos ? 'var(--green)' : '#B23A2E';
+    const lbl = m.y === 1 ? T.cf_evo_now : T.cf_evo_yr.replace('{n}', m.y);
+    const valY = pos ? barY - 5 : barY + barH + 12;
+    return `<rect x="${(cx - bw / 2).toFixed(1)}" y="${barY.toFixed(1)}" width="${bw.toFixed(1)}" height="${barH.toFixed(1)}" rx="2.5" fill="${col}"/>`
+      + `<text x="${cx.toFixed(1)}" y="${valY.toFixed(1)}" text-anchor="middle" font-size="10.5" font-weight="700" fill="${col}">${fmtS(Math.round(m.cfMonth))}</text>`
+      + `<text x="${cx.toFixed(1)}" y="${H - 8}" text-anchor="middle" font-size="9.5" fill="var(--gray-500)">${lbl}</text>`;
+  }).join('');
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block" role="img" aria-label="${T.cf_evo_title}">`
+    + `<line x1="${padL}" y1="${zeroY.toFixed(1)}" x2="${W - padR}" y2="${zeroY.toFixed(1)}" stroke="var(--gray-300)" stroke-width="1" stroke-dasharray="3 3"/>`
+    + bars + `</svg>`;
 }
 
 /* Graphique SVG : patrimoine net (aire verte) empilé sur le capital restant dû (aire grise),
@@ -3122,6 +3173,21 @@ function render(d) {
       <div class="kpi"><div class="kpi-l">${T.kpi_net_yield}</div><div class="kpi-v ${d.netYield >= 0 ? '' : 'neg'}">${pct(d.netYield)}</div><div class="kpi-s">${T.kpi_net_sub}</div></div>
       <div class="kpi"><div class="kpi-l">${T.kpi_cf}</div><div class="kpi-v ${d.real.cfMonth >= 0 ? 'pos' : 'neg'}">${fmtS(d.real.cfMonth)}</div><div class="kpi-s">${T.kpi_cf_sub}</div></div>
     </div>
+
+    ${d.projection && d.price > 0 && d.projection.cfMilestones ? (() => {
+      const pj = d.projection, be = pj.breakevenYear;
+      const note = be === null ? T.cf_evo_neg
+        : be <= 1 ? T.cf_evo_be1
+        : T.cf_evo_be.replace('{n}', be);
+      const noteCls = be === null ? 'neg' : 'pos';
+      return `
+    <div class="bsec cf-evo">
+      <div class="card-eyebrow" style="margin-bottom:8px">${T.cf_evo_title}</div>
+      ${cashflowChart(pj.cfMilestones)}
+      <p class="cf-evo-note ${noteCls}">${note}</p>
+      <p class="proj-note">${T.cf_evo_hint.replace('{infl}', pj.rentInfl)}</p>
+    </div>`;
+    })() : ''}
 
     ${d.pricePerM2 && d.pricePerM2.cityM2 ? (() => {
       const p = d.pricePerM2, dp = p.deltaPct;
