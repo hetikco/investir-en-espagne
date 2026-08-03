@@ -408,7 +408,7 @@ body {
 /* ---------- SIMULATOR ---------- */
 .sim-main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 70px; }
 .sim-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 22px; align-items: stretch; }
-@media (max-width: 900px) { .sim-grid { grid-template-columns: 1fr; } }
+@media (max-width: 900px) { .sim-grid { grid-template-columns: minmax(0,1fr); } }
 /* Colonne résultats collante : reste visible pendant qu'on remplit le formulaire à gauche */
 @media (min-width: 901px) { #res-card { position: sticky; top: 78px; } }
 
@@ -434,7 +434,8 @@ body {
 .sim-step.done .card-eyebrow, .sim-step.done .card-title { display: none; }
 .step-summary { display: none; }
 .sim-step.done .step-summary { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray-900); }
-.step-summary .ck { color: var(--green); font-weight: 700; }
+.step-summary .ck { color: var(--green); font-weight: 700; flex-shrink: 0; }
+.step-summary-text { min-width: 0; overflow-wrap: break-word; }
 .sim-step.locked .card-head::after { content: '🔒'; float: right; font-size: 13px; opacity: .6; }
 .tip-auto { vertical-align: 1px; }
 .sim-next { margin-top: 18px; }
@@ -622,6 +623,7 @@ input[type=number] { -moz-appearance: textfield; }
 .foot-links a { color: rgba(255,255,255,.5); font-family: var(--font-body); font-size: 12px; text-decoration: none; }
 .foot-links a:hover { color: var(--gold-light); }
 .sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0,0,0,0); }
+input.sr { width: 1px; height: 1px; }
 </style>
 </head>
 <body>
@@ -2905,7 +2907,7 @@ function collapseStep(n) {
   const el = $('sim-step-' + n);
   if (!el) return;
   el.classList.add('done');
-  $('sum-' + n).innerHTML = `<span class="ck">✓</span> ${stepSummary(n)}`;
+  $('sum-' + n).innerHTML = `<span class="ck">✓</span><span class="step-summary-text">${stepSummary(n)}</span>`;
 }
 
 /* Ré-ouvre une étape repliée pour la modifier */
