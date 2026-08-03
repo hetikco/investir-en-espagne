@@ -406,6 +406,15 @@ body {
 .sim-step { scroll-margin-top: 84px; transition: opacity .25s; overflow: visible; }
 .sim-step .card-head { border-radius: var(--radius-lg) var(--radius-lg) 0 0; }
 .sim-step.locked { opacity: .45; pointer-events: none; user-select: none; }
+
+/* Étape complétée : repliée en un résumé d'une ligne, cliquable pour ré-ouvrir */
+.sim-step.done .card-body { display: none; }
+.sim-step.done .card-head { cursor: pointer; padding: 12px 20px; border-radius: var(--radius-lg); border-bottom: none; }
+.sim-step.done .card-head:hover { background: var(--gray-100); }
+.sim-step.done .card-eyebrow, .sim-step.done .card-title { display: none; }
+.step-summary { display: none; }
+.sim-step.done .step-summary { display: flex; align-items: center; gap: 7px; font-size: 13px; color: var(--gray-900); }
+.step-summary .ck { color: var(--green); font-weight: 700; }
 .sim-step.locked .card-head::after { content: '🔒'; float: right; font-size: 13px; opacity: .6; }
 .tip-auto { vertical-align: 1px; }
 .sim-next { margin-top: 18px; }
@@ -771,9 +780,10 @@ input[type=number] { -moz-appearance: textfield; }
       <!-- FORM COLUMN -->
       <div>
         <div class="card sim-step" id="sim-step-1">
-          <div class="card-head">
+          <div class="card-head" onclick="reopenStep(1)">
             <div class="card-eyebrow" data-i18n="sim_f1_eyebrow"></div>
             <div class="card-title" data-i18n="sim_f1_title"></div>
+            <div class="step-summary" id="sum-1"></div>
           </div>
           <div class="card-body">
             <div class="field">
@@ -833,9 +843,10 @@ input[type=number] { -moz-appearance: textfield; }
 
         <!-- Coûts annexes -->
         <div class="card sim-step locked" id="sim-step-2">
-          <div class="card-head">
+          <div class="card-head" onclick="reopenStep(2)">
             <div class="card-eyebrow" data-i18n="sim_f2_eyebrow"></div>
             <div class="card-title" data-i18n="sim_f2_title"></div>
+            <div class="step-summary" id="sum-2"></div>
           </div>
           <div class="card-body">
             <div class="frow">
@@ -876,9 +887,10 @@ input[type=number] { -moz-appearance: textfield; }
 
         <!-- Financement -->
         <div class="card sim-step locked" id="sim-step-3">
-          <div class="card-head">
+          <div class="card-head" onclick="reopenStep(3)">
             <div class="card-eyebrow" data-i18n="sim_f3_eyebrow"></div>
             <div class="card-title" data-i18n="sim_f3_title"></div>
+            <div class="step-summary" id="sum-3"></div>
           </div>
           <div class="card-body">
             <div class="field">
@@ -1272,6 +1284,7 @@ I18N.fr = {
   sim_f1_eyebrow: "Étape 1", sim_f1_title: "Le bien",
   sim_f2_eyebrow: "Étape 2", sim_f2_title: "Coûts annexes",
   sim_f3_eyebrow: "Étape 3", sim_f3_title: "Financement",
+  step2_sum: "Frais annexes : {v}", step3_sum_cash: "Achat comptant, sans crédit",
   sim_f4_eyebrow: "Étape 4", sim_f4_title: "Revenus & charges annuelles",
 
   f_simmode: "Je pars de…", mode_price: "Un prix", mode_budget: "Mon budget",
@@ -2845,7 +2858,42 @@ function solveMaxPrice(budget, regionId, isNew, isVPO, ctx) {
   return Math.floor(lo / 1000) * 1000;
 }
 
-/* Dévoilement progressif : valide l'étape n puis débloque et défile vers n+1 */
+/* Résumé d'une ligne affiché quand une étape est repliée */
+function stepSummary(n) {
+  if (n === 1) {
+    const price = simMode() === 'budget' ? num('budget') : num('price');
+    const city = $('city').value.trim();
+    const regionSel = $('region');
+    const regionName = regionSel.selectedIndex >= 0 ? regionSel.options[regionSel.selectedIndex].text : '';
+    return `${fmt(price)}${city ? ' · ' + city : ''}${regionName ? ' · ' + regionName : ''}`;
+  }
+  if (n === 2) {
+    const total = num('agency') + num('notary') + num('works') + num('furniture') + num('contingency') + num('travel');
+    return T.step2_sum.replace('{v}', fmt(total));
+  }
+  if (n === 3) {
+    if (!$('tg-mortgage').classList.contains('on')) return T.step3_sum_cash;
+    return `${T.f_ltv} ${num('ltv')} % · ${num('years')} ${T.unit_years} · ${num('rate')} %`;
+  }
+}
+
+/* Replie une étape validée en résumé cliquable */
+function collapseStep(n) {
+  const el = $('sim-step-' + n);
+  if (!el) return;
+  el.classList.add('done');
+  $('sum-' + n).innerHTML = `<span class="ck">✓</span> ${stepSummary(n)}`;
+}
+
+/* Ré-ouvre une étape repliée pour la modifier */
+function reopenStep(n) {
+  const el = $('sim-step-' + n);
+  if (!el || !el.classList.contains('done')) return;
+  el.classList.remove('done');
+  el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+/* Dévoilement progressif : valide l'étape n, la replie, puis débloque et défile vers n+1 */
 function continueStep(n) {
   if (n === 1) {
     const regionId = $('region').value;
@@ -2867,6 +2915,7 @@ function continueStep(n) {
     if (!ok) return;
     recalcDefaults();
   }
+  collapseStep(n);
   const next = $('sim-step-' + (n + 1));
   if (next) {
     next.classList.remove('locked');
