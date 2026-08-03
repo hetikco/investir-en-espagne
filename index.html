@@ -36,6 +36,7 @@
   --gold:        #CBA046;
   --gold-light:  #E3C077;
   --gold-pale:   #FBF6EA;
+  --gold-ink:    #8A6620; /* variante foncée du gold, utilisée en texte sur fond clair (contraste AA) */
 
   --bg:          #F5F4F0;
   --white:       #FFFFFF;
@@ -43,7 +44,7 @@
   --gray-100:    #EFEFEB;
   --gray-200:    #E3E2DC;
   --gray-300:    #C8C7C0;
-  --gray-500:    #8A8980;
+  --gray-500:    #6E6D64;
   --gray-700:    #4A4940;
   --gray-900:    #1E1D18;
 
@@ -155,7 +156,7 @@ body {
   border: 40px solid rgba(197,155,71,.05); pointer-events: none;
 }
 .hero-inner { max-width: 720px; margin: 0 auto; position: relative; }
-.hero-flags { font-size: 26px; margin-bottom: 18px; letter-spacing: 4px; }
+.hero-flags { font-size: 26px; margin-bottom: 18px; letter-spacing: 4px; color: rgba(255,255,255,.7); }
 .hero h1 {
   font-family: var(--font-title); font-weight: 700;
   font-size: clamp(28px, 5vw, 46px); line-height: 1.15; color: #fff;
@@ -166,7 +167,7 @@ body {
 .hero-stats { display: flex; justify-content: center; gap: 36px; margin-top: 32px; flex-wrap: wrap; }
 .hstat { text-align: center; }
 .hstat-val { font-family: var(--font-title); font-size: 24px; font-weight: 700; color: var(--gold-light); line-height: 1.1; }
-.hstat-lbl { font-size: 11.5px; color: rgba(255,255,255,.45); text-transform: uppercase; letter-spacing: .08em; max-width: 150px; margin: 4px auto 0; }
+.hstat-lbl { font-size: 11.5px; color: rgba(255,255,255,.55); text-transform: uppercase; letter-spacing: .08em; max-width: 150px; margin: 4px auto 0; }
 .hstat-star .hstat-val { font-size: 34px; }
 .hstat-star .hstat-lbl { color: rgba(255,255,255,.7); }
 
@@ -216,7 +217,7 @@ body {
   margin-top: 28px; background: var(--white); border: 1px solid var(--gray-100);
   border-radius: var(--radius-lg); padding: 24px 26px; box-shadow: var(--shadow-sm);
 }
-.about-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); margin-bottom: 8px; }
+.about-badge { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold-ink); margin-bottom: 8px; }
 .about-block h2 { font-family: var(--font-title); font-size: 19px; font-weight: 600; color: var(--gray-900); margin-bottom: 10px; letter-spacing: -.01em; }
 .about-block p { font-size: 13.5px; color: var(--gray-700); line-height: 1.65; margin-bottom: 10px; }
 .about-block p:last-of-type { margin-bottom: 0; }
@@ -225,7 +226,7 @@ body {
 .about-contact a:hover { text-decoration: underline; }
 
 .why-block { margin-top: 28px; background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-lg); padding: 26px; box-shadow: var(--shadow-sm); }
-.why-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold); margin-bottom: 8px; }
+.why-eyebrow { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .1em; color: var(--gold-ink); margin-bottom: 8px; }
 .why-title { font-family: var(--font-title); font-size: 20px; font-weight: 600; color: var(--gray-900); margin-bottom: 20px; letter-spacing: -.01em; line-height: 1.3; }
 .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 18px 24px; }
 @media (max-width: 640px) { .why-grid { grid-template-columns: 1fr; } }
@@ -235,8 +236,7 @@ body {
 .why-id { font-size: 12.5px; color: var(--gray-700); line-height: 1.55; }
 .why-note { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--gray-100); font-size: 13px; color: var(--gray-700); font-style: italic; }
 .home-fresh { margin-top: 16px; text-align: center; font-size: 11.5px; color: var(--gray-500); line-height: 1.6; }
-.home-fresh a { color: var(--navy); text-decoration: none; }
-.home-fresh a:hover { text-decoration: underline; }
+.home-fresh a { color: var(--navy); text-decoration: underline; }
 
 /* ---------- SECTION HEAD ---------- */
 .sec-head { background: var(--navy); padding: 38px 20px 44px; text-align: center; }
@@ -289,10 +289,11 @@ body {
   border: 1px solid var(--gray-100); margin-bottom: 12px; overflow: hidden;
   scroll-margin-top: 90px;
 }
+.step-row { display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px; }
 .step-head {
-  display: flex; align-items: flex-start; gap: 14px; padding: 18px 20px;
+  display: flex; align-items: flex-start; gap: 14px; flex: 1; min-width: 0;
   cursor: pointer; user-select: none; transition: background .12s;
-  background: none; border: none; width: 100%; text-align: left;
+  background: none; border: none; text-align: left; border-radius: var(--radius);
   font-family: var(--font-body);
 }
 .step-head:hover { background: var(--gray-50); }
@@ -384,7 +385,7 @@ body {
   margin-top: 26px; background: var(--navy); border-radius: var(--radius-lg);
   padding: 26px; text-align: center; color: #fff;
 }
-.guide-cta h3 { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 6px; }
+.guide-cta h2 { font-family: var(--font-title); font-size: 20px; font-weight: 600; margin-bottom: 6px; }
 .guide-cta p { font-size: 14px; color: rgba(255,255,255,.6); margin-bottom: 16px; }
 .guide-cta .btn { max-width: 300px; margin: 0 auto; background: var(--gold); color: var(--navy); }
 .guide-cta .btn:hover { background: var(--gold-light); }
@@ -614,7 +615,7 @@ input[type=number] { -moz-appearance: textfield; }
 .site-footer { background: var(--navy-dark); padding: 28px 20px; text-align: center; }
 .foot-inner { max-width: 720px; margin: 0 auto; }
 .foot-brand { font-family: var(--font-title); font-size: 15px; color: var(--gold-light); font-weight: 600; margin-bottom: 8px; }
-.foot-disc { font-size: 11.5px; color: rgba(255,255,255,.4); line-height: 1.65; }
+.foot-disc { font-size: 11.5px; color: rgba(255,255,255,.6); line-height: 1.65; }
 .foot-links { margin-top: 12px; display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
 .foot-links button { background: none; border: none; color: rgba(255,255,255,.5); font-family: var(--font-body); font-size: 12px; cursor: pointer; }
 .foot-links button:hover { color: var(--gold-light); }
@@ -649,7 +650,7 @@ input[type=number] { -moz-appearance: textfield; }
 
 <!-- ============ HOME ============ -->
 <div class="page active" id="page-home">
-  <section class="hero">
+  <section class="hero" aria-label="Présentation">
     <div class="hero-inner">
       <div class="hero-flags">🇫🇷 → 🇪🇸</div>
       <h1 data-i18n="home_h1"></h1>
@@ -730,7 +731,7 @@ input[type=number] { -moz-appearance: textfield; }
       <p data-i18n="interest_sub"></p>
       <form class="interest-form" id="interest-form">
         <input type="email" id="interest-email" name="email">
-        <input type="text" name="_gotcha" class="sr" tabindex="-1" autocomplete="off">
+        <input type="text" name="_gotcha" class="sr" tabindex="-1" autocomplete="off" aria-hidden="true">
         <button type="submit" class="btn" data-i18n="interest_btn"></button>
       </form>
       <p class="interest-msg" id="interest-msg"></p>
@@ -740,10 +741,10 @@ input[type=number] { -moz-appearance: textfield; }
 
 <!-- ============ GUIDE ============ -->
 <div class="page" id="page-guide">
-  <section class="sec-head">
+  <section class="sec-head" aria-labelledby="guide-h1">
     <div class="sec-head-inner">
       <div class="sec-eyebrow" data-i18n="guide_eyebrow"></div>
-      <h1 data-i18n="guide_h1"></h1>
+      <h1 id="guide-h1" data-i18n="guide_h1"></h1>
       <p data-i18n="guide_sub"></p>
     </div>
   </section>
@@ -777,7 +778,7 @@ input[type=number] { -moz-appearance: textfield; }
     <div class="progress-rail" id="prail"></div>
     <div id="steps-container"></div>
     <div class="guide-cta">
-      <h3 data-i18n="guide_cta_t"></h3>
+      <h2 data-i18n="guide_cta_t"></h2>
       <p data-i18n="guide_cta_d"></p>
       <button class="btn" onclick="go('sim')" data-i18n="guide_cta_btn"></button>
     </div>
@@ -786,10 +787,10 @@ input[type=number] { -moz-appearance: textfield; }
 
 <!-- ============ SIMULATEUR ============ -->
 <div class="page" id="page-sim">
-  <section class="sec-head">
+  <section class="sec-head" aria-labelledby="sim-h1">
     <div class="sec-head-inner">
       <div class="sec-eyebrow" data-i18n="sim_eyebrow"></div>
-      <h1 data-i18n="sim_h1"></h1>
+      <h1 id="sim-h1" data-i18n="sim_h1"></h1>
       <p data-i18n="sim_sub"></p>
     </div>
   </section>
@@ -836,7 +837,7 @@ input[type=number] { -moz-appearance: textfield; }
             </div>
 
             <div class="field">
-              <label data-i18n="f_region"></label>
+              <label for="region" data-i18n="f_region"></label>
               <div class="swrap"><select id="region"></select></div>
               <div class="ferr" id="region-err" data-i18n="err_region"></div>
             </div>
@@ -861,7 +862,7 @@ input[type=number] { -moz-appearance: textfield; }
         </div>
 
         <!-- Coûts annexes -->
-        <div class="card sim-step locked" id="sim-step-2">
+        <div class="card sim-step locked" id="sim-step-2" inert>
           <div class="card-head" onclick="reopenStep(2)">
             <div class="card-eyebrow" data-i18n="sim_f2_eyebrow"></div>
             <div class="card-title" data-i18n="sim_f2_title"></div>
@@ -905,7 +906,7 @@ input[type=number] { -moz-appearance: textfield; }
         </div>
 
         <!-- Financement -->
-        <div class="card sim-step locked" id="sim-step-3">
+        <div class="card sim-step locked" id="sim-step-3" inert>
           <div class="card-head" onclick="reopenStep(3)">
             <div class="card-eyebrow" data-i18n="sim_f3_eyebrow"></div>
             <div class="card-title" data-i18n="sim_f3_title"></div>
@@ -961,7 +962,7 @@ input[type=number] { -moz-appearance: textfield; }
         </div>
 
         <!-- Revenus & charges -->
-        <div class="card sim-step locked" id="sim-step-4">
+        <div class="card sim-step locked" id="sim-step-4" inert>
           <div class="card-head">
             <div class="card-eyebrow" data-i18n="sim_f4_eyebrow"></div>
             <div class="card-title" data-i18n="sim_f4_title"></div>
@@ -1076,10 +1077,10 @@ input[type=number] { -moz-appearance: textfield; }
 
 <!-- ============ FAQ ============ -->
 <div class="page" id="page-faq">
-  <section class="sec-head">
+  <section class="sec-head" aria-labelledby="faq-h1">
     <div class="sec-head-inner">
       <div class="sec-eyebrow" data-i18n="faq_eyebrow"></div>
-      <h1 data-i18n="faq_h1"></h1>
+      <h1 id="faq-h1" data-i18n="faq_h1"></h1>
       <p data-i18n="faq_sub"></p>
     </div>
   </section>
@@ -1090,10 +1091,10 @@ input[type=number] { -moz-appearance: textfield; }
 
 <!-- ============ GLOSSAIRE ============ -->
 <div class="page" id="page-glossary">
-  <section class="sec-head">
+  <section class="sec-head" aria-labelledby="glossary-h1">
     <div class="sec-head-inner">
       <div class="sec-eyebrow" data-i18n="glossary_eyebrow"></div>
-      <h1 data-i18n="glossary_h1"></h1>
+      <h1 id="glossary-h1" data-i18n="glossary_h1"></h1>
       <p data-i18n="glossary_sub"></p>
     </div>
   </section>
@@ -1104,10 +1105,10 @@ input[type=number] { -moz-appearance: textfield; }
 
 <!-- ============ MENTIONS LÉGALES ============ -->
 <div class="page" id="page-legal">
-  <section class="sec-head">
+  <section class="sec-head" aria-labelledby="legal-h1">
     <div class="sec-head-inner">
       <div class="sec-eyebrow" data-i18n="legal_eyebrow"></div>
-      <h1 data-i18n="legal_h1"></h1>
+      <h1 id="legal-h1" data-i18n="legal_h1"></h1>
     </div>
   </section>
   <main class="content-main">
@@ -1384,6 +1385,7 @@ I18N.fr = {
   total_sub: "soit {pct} % au-dessus du prix affiché",
   tsplit_extra: "Frais au-delà du prix", tsplit_cash: "Apport nécessaire", tsplit_cash_nomort: "Sans prêt (comptant)",
   scen_title: "Cash-flow locatif annuel",
+  scen_row_label: "Poste",
   scen_min: "Min.", scen_real: "Réaliste", scen_max: "Max.",
   r_gross: "Loyers bruts", r_vacancy: "− Vacance", r_net_rent: "Loyers encaissés",
   vacancy_info: "Périodes où le logement reste vide entre deux locataires. On retient ici une vacance moyenne (modifiable à l'étape 4) : un loyer calculé sur 12 mois pleins est théorique.",
@@ -2535,17 +2537,19 @@ function renderSteps() {
     const done = completedSteps.has(s.n);
     return `
     <article class="step${openSet.has(String(s.n)) ? ' open' : ''}" id="step-${s.n}" data-n="${s.n}">
-      <div class="step-head" role="button" tabindex="0" onclick="toggleStep(${s.n})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStep(${s.n})}" aria-expanded="${openSet.has(String(s.n))}">
-        <button class="step-num${done ? ' complete' : ''}" onclick="event.stopPropagation(); toggleComplete(${s.n})" title="${T.step_mark_done}" aria-label="${T.step_mark_done}">${done ? '✓' : s.n}</button>
-        <div class="step-headinfo">
-          <div class="step-title">${s.t}</div>
-          <div class="step-meta">
-            <span class="chip chip-time">⏱ ${s.time}</span>
-            <span class="chip chip-cost">${s.cost}</span>
-            <span class="chip chip-${s.badge}">${T['badge_' + s.badge]}</span>
+      <div class="step-row">
+        <button class="step-num${done ? ' complete' : ''}" onclick="toggleComplete(${s.n})" title="${T.step_mark_done}" aria-label="${T.step_mark_done}">${done ? '✓' : s.n}</button>
+        <div class="step-head" role="button" tabindex="0" onclick="toggleStep(${s.n})" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleStep(${s.n})}" aria-expanded="${openSet.has(String(s.n))}">
+          <div class="step-headinfo">
+            <div class="step-title">${s.t}</div>
+            <div class="step-meta">
+              <span class="chip chip-time">⏱ ${s.time}</span>
+              <span class="chip chip-cost">${s.cost}</span>
+              <span class="chip chip-${s.badge}">${T['badge_' + s.badge]}</span>
+            </div>
           </div>
+          <svg class="step-caret" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
         </div>
-        <svg class="step-caret" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
       </div>
       <div class="step-body">${expand(s.body)}${cases}</div>
     </article>`;
@@ -2938,6 +2942,7 @@ function continueStep(n) {
   const next = $('sim-step-' + (n + 1));
   if (next) {
     next.classList.remove('locked');
+    next.removeAttribute('inert');
     next.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
 }
@@ -3265,7 +3270,7 @@ function render(d) {
     <div class="scen-wrap">
       <div class="card-eyebrow" style="margin-bottom:8px">${T.scen_title}</div>
       <table class="scen-tbl">
-        <thead><tr><th></th><th>${T.scen_min}</th><th>${T.scen_real}</th><th>${T.scen_max}</th></tr></thead>
+        <thead><tr><th><span class="sr">${T.scen_row_label}</span></th><th>${T.scen_min}</th><th>${T.scen_real}</th><th>${T.scen_max}</th></tr></thead>
         <tbody>
           ${line(T.r_gross, s => s.gross)}
           ${line(T.r_vacancy + infoDot(T.vacancy_info), s => -s.vacancy)}
