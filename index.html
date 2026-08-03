@@ -389,8 +389,10 @@ body {
 
 /* ---------- SIMULATOR ---------- */
 .sim-main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 70px; }
-.sim-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 22px; align-items: start; }
+.sim-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 22px; align-items: stretch; }
 @media (max-width: 900px) { .sim-grid { grid-template-columns: 1fr; } }
+/* Colonne résultats collante : reste visible pendant qu'on remplit le formulaire à gauche */
+@media (min-width: 901px) { #res-card { position: sticky; top: 78px; } }
 
 .card {
   background: var(--white); border-radius: var(--radius-lg);
@@ -3627,15 +3629,28 @@ function fillContactLinks() {
 }
 fillContactLinks();
 
+/* Filet de secours tant que FORMSPREE_URL n'est pas configuré : ouvre le client mail
+   du visiteur, pré-rempli, plutôt que de perdre l'intérêt silencieusement. */
+function mailtoFallback(visitorEmail) {
+  const subject = encodeURIComponent('Nouvel intérêt — ' + document.title);
+  const body = encodeURIComponent(`Un visiteur souhaite recevoir des informations.\nEmail renseigné : ${visitorEmail}`);
+  const a = document.createElement('a');
+  a.href = `mailto:${CONTACT_EMAIL}?subject=${subject}&body=${body}`;
+  a.click();
+}
+
 $('interest-form').addEventListener('submit', async e => {
   e.preventDefault();
   const msg = $('interest-msg');
+  const visitorEmail = $('interest-email').value.trim();
   makeChecklistPDF();                       // le PDF se télécharge toujours
   msg.textContent = T.interest_success;
   msg.className = 'interest-msg show ok';
-  // Capture de l'email uniquement si Formspree est configuré (sans bloquer le téléchargement)
+  // Capture de l'email si Formspree est configuré ; sinon, filet de secours par mailto (sans bloquer le téléchargement)
   if (!FORMSPREE_URL.includes('YOUR_FORM_ID')) {
     try { await fetch(FORMSPREE_URL, { method: 'POST', headers: { 'Accept': 'application/json' }, body: new FormData(e.target) }); } catch (err) {}
+  } else if (visitorEmail) {
+    mailtoFallback(visitorEmail);
   }
   e.target.reset();
 });
