@@ -2,6 +2,18 @@
 
 Guide complet + simulateur d'investissement pour les Français qui achètent un bien immobilier en Espagne. Site statique à fichier unique, sans backend ni build.
 
+## Les 3 versions du simulateur (test utilisateurs)
+
+Le simulateur existe en trois interfaces, sélectionnables par le bandeau « Version testée » en haut de la page ou par un paramètre d'URL — pratique pour envoyer un lien différent à chaque testeur :
+
+| Lien | Version | Principe |
+|---|---|---|
+| `?v=1` | **1 — actuelle** | Formulaire en 4 étapes repliables, rapport détaillé à droite |
+| `?v=2` | **2 — tableau de bord vivant** | Curseurs, aucun bouton « Calculer », résultat recalculé en direct |
+| `?v=3` | **3 — express + verdict** | 5 questions, puis le bilan et la cascade « d'où vient l'argent » en premier, détail replié |
+
+Les trois partagent **le même moteur de calcul** : les contrôles des versions 2 et 3 écrivent dans les champs de la version 1 puis appellent `calculate()`. Un même projet donne donc exactement les mêmes chiffres dans les trois interfaces, et une correction de calcul les met à jour toutes.
+
 ## Structure
 
 Tout tient dans **`index.html`** (HTML + CSS + JS inline, ~3 700 lignes) :

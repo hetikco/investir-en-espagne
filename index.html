@@ -407,6 +407,81 @@ body {
 
 /* ---------- SIMULATOR ---------- */
 .sim-main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 70px; }
+/* ---------- Sélecteur de version (tests utilisateurs) ---------- */
+.vswitch { display: flex; align-items: center; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+.vswitch-l { font-size: 10.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--gray-500); margin-right: 2px; }
+.vbtn {
+  font-family: var(--font-body); font-size: 12.5px; font-weight: 700; cursor: pointer;
+  width: 30px; height: 30px; border-radius: 50%; border: 1.5px solid var(--gray-300);
+  background: var(--white); color: var(--gray-700); transition: .12s;
+}
+.vbtn:hover { border-color: var(--navy); color: var(--navy); }
+.vbtn.active { background: var(--navy); border-color: var(--navy); color: #fff; }
+.vswitch-d { font-size: 11.5px; color: var(--gray-500); margin-left: 6px; }
+
+/* ---------- V2 : tableau de bord vivant ---------- */
+.v2-grid { display: grid; grid-template-columns: 250px minmax(0,1fr); gap: 18px; align-items: start; }
+@media (max-width: 800px) { .v2-grid { grid-template-columns: minmax(0,1fr); } }
+.v2-rail {
+  background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-lg);
+  box-shadow: var(--shadow); padding: 16px;
+}
+@media (min-width: 801px) { .v2-rail { position: sticky; top: 78px; } }
+.v2-rail-h { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--gray-500); margin-bottom: 12px; }
+.v2-sl { margin-top: 14px; }
+.v2-sl-top { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 4px; }
+.v2-sl-l { font-size: 11.5px; color: var(--gray-700); }
+.v2-sl-v { font-size: 12.5px; font-weight: 700; color: var(--navy); font-feature-settings: 'tnum'; }
+.v2-rail input[type=range] { width: 100%; accent-color: var(--green); height: 20px; margin: 0; cursor: pointer; }
+.v2-rail input[type=range]:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.v2-live { display: inline-flex; align-items: center; gap: 6px; font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--green); background: var(--green-bg); padding: 3px 9px; border-radius: 20px; margin-bottom: 10px; }
+.v2-dot { width: 5px; height: 5px; border-radius: 50%; background: var(--green); }
+@media (prefers-reduced-motion: no-preference) { .v2-dot { animation: v2pulse 1.8s ease-in-out infinite; } }
+@keyframes v2pulse { 0%,100% { opacity: 1; } 50% { opacity: .3; } }
+.v2-kpis { display: grid; grid-template-columns: repeat(4,1fr); gap: 9px; margin-bottom: 14px; }
+@media (max-width: 760px) { .v2-kpis { grid-template-columns: repeat(2,1fr); } }
+@media (max-width: 400px) { .v2-kpis { grid-template-columns: 1fr; } }
+.v2-k { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius); padding: 11px 12px; box-shadow: var(--shadow-sm); }
+.v2-k-l { font-size: 9.5px; text-transform: uppercase; letter-spacing: .05em; color: var(--gray-500); }
+.v2-k-v { font-family: var(--font-title); font-size: 20px; font-weight: 700; color: var(--navy); line-height: 1.15; margin-top: 2px; font-feature-settings: 'tnum'; }
+.v2-k-v.pos { color: var(--green); } .v2-k-v.neg { color: var(--red); }
+.v2-k-s { font-size: 10px; color: var(--gray-500); margin-top: 1px; }
+.v2-card { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-lg); box-shadow: var(--shadow); padding: 16px 18px; margin-bottom: 12px; }
+.v2-card-h { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--gray-500); margin-bottom: 10px; }
+.v2-detail { border: 1px solid var(--gray-200); border-radius: var(--radius); overflow: hidden; }
+.v2-detail > summary { cursor: pointer; list-style: none; padding: 11px 15px; font-size: 13px; font-weight: 600; color: var(--navy); background: var(--gray-50); }
+.v2-detail > summary::-webkit-details-marker { display: none; }
+.v2-detail > summary::after { content: ' +'; color: var(--gray-500); }
+.v2-detail[open] > summary::after { content: ' −'; }
+
+/* ---------- V3 : express + verdict + cascade ---------- */
+.v3-wrap { max-width: 720px; margin: 0 auto; }
+.v3-apport-o { font-size: 11.5px; font-weight: 700; color: var(--navy); margin-left: 6px; font-feature-settings: 'tnum'; }
+.v3-form input[type=range] { width: 100%; accent-color: var(--green); height: 20px; cursor: pointer; }
+.v3-form input[type=range]:focus-visible { outline: 2px solid var(--navy); outline-offset: 2px; }
+.v3-auto-note { font-size: 11px; color: var(--gray-500); margin-top: 10px; line-height: 1.5; }
+.v3-hero { background: var(--navy); border-radius: var(--radius-lg); padding: 24px 22px 20px; color: #fff; position: relative; overflow: hidden; margin-top: 16px; }
+.v3-hero::after { content: ''; position: absolute; top: -80px; right: -80px; width: 240px; height: 240px; border-radius: 50%; background: radial-gradient(circle, rgba(203,160,70,.18), rgba(203,160,70,0) 70%); }
+.v3-hero-l { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .11em; color: var(--gold-light); margin-bottom: 8px; position: relative; }
+.v3-hero-v { font-family: var(--font-title); font-size: clamp(30px,7vw,44px); font-weight: 700; line-height: 1.05; letter-spacing: -.02em; position: relative; font-feature-settings: 'tnum'; }
+.v3-hero-s { font-size: 13.5px; color: rgba(255,255,255,.75); margin-top: 9px; max-width: 50ch; position: relative; line-height: 1.6; }
+.v3-hero-s strong { color: #fff; }
+.v3-hero-row { display: flex; gap: 26px; flex-wrap: wrap; margin-top: 18px; padding-top: 16px; border-top: 1px solid rgba(255,255,255,.15); position: relative; }
+.v3-hs b { display: block; font-family: var(--font-title); font-size: 17px; color: #fff; font-feature-settings: 'tnum'; }
+.v3-hs span { font-size: 10.5px; color: rgba(255,255,255,.62); text-transform: uppercase; letter-spacing: .04em; }
+.v3-sec { background: var(--white); border: 1px solid var(--gray-100); border-radius: var(--radius-lg); box-shadow: var(--shadow); margin-top: 12px; overflow: hidden; }
+.v3-sec-h { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: .09em; color: var(--gray-500); padding: 15px 18px 0; }
+.v3-acc { border-top: 1px solid var(--gray-100); }
+.v3-acc > summary {
+  cursor: pointer; list-style: none; padding: 13px 18px; font-size: 13.5px; font-weight: 600;
+  color: var(--gray-900); display: flex; align-items: center; gap: 10px;
+}
+.v3-acc > summary::-webkit-details-marker { display: none; }
+.v3-acc > summary:hover { background: var(--gray-50); }
+.v3-acc > summary .v3-amt { margin-left: auto; font-weight: 700; color: var(--navy); font-feature-settings: 'tnum'; }
+.v3-acc > summary::after { content: '+'; color: var(--gray-500); font-size: 16px; width: 12px; text-align: center; }
+.v3-acc[open] > summary::after { content: '−'; }
+.v3-acc-body { padding: 0 18px 16px; }
 .dev-fill-bar { margin-bottom: 14px; }
 .dev-fill-btn {
   font-family: var(--font-body); font-size: 12px; font-weight: 600; color: var(--amber);
@@ -817,10 +892,21 @@ input.sr { width: 1px; height: 1px; }
   </section>
 
   <main class="sim-main">
+    <!-- Sélecteur de version — pour tests utilisateurs. Lien direct : ?v=1, ?v=2 ou ?v=3 -->
+    <div class="vswitch" role="group" aria-label="Version du simulateur">
+      <span class="vswitch-l">Version testée</span>
+      <button type="button" class="vbtn active" id="vbtn-1" onclick="setVariant(1)">1</button>
+      <button type="button" class="vbtn" id="vbtn-2" onclick="setVariant(2)">2</button>
+      <button type="button" class="vbtn" id="vbtn-3" onclick="setVariant(3)">3</button>
+      <span class="vswitch-d" id="vswitch-desc"></span>
+    </div>
     <!-- Bouton de test dev — préremplit avec l'appartement réel de Saragosse pour tester vite. À retirer si non conservé. -->
     <div class="dev-fill-bar">
       <button type="button" class="dev-fill-btn" onclick="fillZaragozaExample()">🧪 Exemple : appartement Saragosse</button>
     </div>
+
+    <!-- ─────────── VERSION 1 — actuelle ─────────── -->
+    <div id="variant-1">
     <div class="sim-grid">
       <!-- FORM COLUMN -->
       <div>
@@ -1086,6 +1172,89 @@ input.sr { width: 1px; height: 1px; }
           </div>
           <div id="res-content" style="display:none"></div>
         </div>
+      </div>
+    </div>
+    </div><!-- /variant-1 -->
+
+    <!-- ─────────── VERSION 2 — tableau de bord vivant ─────────── -->
+    <div id="variant-2" hidden>
+      <div class="v2-grid">
+        <div class="v2-rail">
+          <div class="v2-rail-h">Votre projet</div>
+          <div class="field">
+            <label for="v2-city">Ville</label>
+            <div class="swrap"><select id="v2-city"></select></div>
+          </div>
+          <div class="v2-sl">
+            <div class="v2-sl-top"><label class="v2-sl-l" for="v2-price">Prix du bien</label><span class="v2-sl-v" id="v2-price-o"></span></div>
+            <input type="range" id="v2-price" min="40000" max="600000" step="1000" value="98000">
+          </div>
+          <div class="v2-sl">
+            <div class="v2-sl-top"><label class="v2-sl-l" for="v2-surface">Surface</label><span class="v2-sl-v" id="v2-surface-o"></span></div>
+            <input type="range" id="v2-surface" min="15" max="200" step="1" value="54">
+          </div>
+          <div class="v2-sl">
+            <div class="v2-sl-top"><label class="v2-sl-l" for="v2-apport">Votre apport</label><span class="v2-sl-v" id="v2-apport-o"></span></div>
+            <input type="range" id="v2-apport" min="10" max="100" step="5" value="30">
+          </div>
+          <div class="v2-sl">
+            <div class="v2-sl-top"><label class="v2-sl-l" for="v2-rent">Loyer mensuel</label><span class="v2-sl-v" id="v2-rent-o"></span></div>
+            <input type="range" id="v2-rent" min="200" max="3000" step="10" value="780">
+          </div>
+          <div class="v2-sl">
+            <div class="v2-sl-top"><label class="v2-sl-l" for="v2-years">Durée du prêt</label><span class="v2-sl-v" id="v2-years-o"></span></div>
+            <input type="range" id="v2-years" min="5" max="30" step="1" value="20">
+          </div>
+          <div class="v2-sl">
+            <div class="v2-sl-top"><label class="v2-sl-l" for="v2-rate">Taux du prêt</label><span class="v2-sl-v" id="v2-rate-o"></span></div>
+            <input type="range" id="v2-rate" min="1" max="7" step="0.05" value="3.2">
+          </div>
+        </div>
+        <div class="v2-main">
+          <div class="v2-live"><span class="v2-dot"></span>Calcul en direct</div>
+          <div id="v2-res"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ─────────── VERSION 3 — express + verdict + cascade ─────────── -->
+    <div id="variant-3" hidden>
+      <div class="v3-wrap">
+        <div class="card v3-form">
+          <div class="card-head">
+            <div class="card-eyebrow">Votre projet</div>
+            <div class="card-title">5 questions suffisent</div>
+          </div>
+          <div class="card-body">
+            <div class="frow">
+              <div class="field">
+                <label for="v3-price">Prix du bien</label>
+                <div class="iwrap"><input type="number" id="v3-price" min="10000" step="1000" placeholder="ex. 98000"><span class="iunit">€</span></div>
+              </div>
+              <div class="field">
+                <label for="v3-city">Ville</label>
+                <div class="swrap"><select id="v3-city"></select></div>
+              </div>
+            </div>
+            <div class="frow">
+              <div class="field">
+                <label for="v3-surface">Surface</label>
+                <div class="iwrap"><input type="number" id="v3-surface" min="10" step="1" placeholder="ex. 54"><span class="iunit">m²</span></div>
+              </div>
+              <div class="field">
+                <label for="v3-rent">Loyer mensuel attendu <span class="auto-badge" id="v3-rent-badge">auto</span></label>
+                <div class="iwrap"><input type="number" id="v3-rent" min="0" step="10"><span class="iunit">€</span></div>
+              </div>
+            </div>
+            <div class="field">
+              <label for="v3-apport">Votre apport <span class="v3-apport-o" id="v3-apport-o"></span></label>
+              <input type="range" id="v3-apport" min="10" max="100" step="5" value="30">
+            </div>
+            <button class="btn btn-primary" onclick="v3Calc()" style="margin-top:6px">Voir ma simulation →</button>
+            <div class="v3-auto-note">Les 22 autres paramètres (notaire, IBI, assurances, courtier…) sont estimés automatiquement selon la région. Ajustables après le résultat.</div>
+          </div>
+        </div>
+        <div id="v3-res"></div>
       </div>
     </div>
   </main>
@@ -1383,6 +1552,20 @@ I18N.fr = {
   proj_x_now: "aujourd'hui", proj_x_mid: "+15 ans", proj_x_future: "+30 ans",
   proj_legend_equity: "Patrimoine net", proj_legend_debt: "Capital restant dû", proj_legend_payoff: "Prêt soldé",
   ring_foot_paid: "remboursés par le locataire", ring_foot_gain: "plus-value du bien", ring_foot_payoff: "prêt intégralement soldé", ring_year_n: "An {n}",
+  wf_title: "D'où vient l'argent",
+  wf_apport: "Apport", wf_apport_s: "sortie de poche",
+  wf_equity0: "Part financée", wf_equity0_s: "dans le bien",
+  wf_paid: "Capital amorti", wf_paid_s: "par le locataire",
+  wf_gain: "Plus-value", wf_gain_s: "+{r} %/an",
+  wf_cf: "Loyers nets", wf_cf_s: "cumulés",
+  wf_total: "Bilan net", wf_total_s: "à {h} ans",
+  wf_note: "Sur ce total, {p} sont du crédit remboursé par le locataire — de l'argent que vous n'avez jamais sorti de votre poche.",
+  v3_hero_l: "Votre bilan sur {h} ans", v3_mult: "pour 1 € investi", v3_cf: "cash-flow mensuel", v3_payoff: "bien entièrement à vous",
+  v3_hero_s: "Pour {a} engagés au départ, votre patrimoine net atteint {e} et vous aurez encaissé {cf} de loyers nets.",
+  v3_acc_cost: "Ce que vous sortez de votre poche", v3_acc_year: "Ce que ça rapporte chaque année",
+  v3_acc_wealth: "Comment se construit le patrimoine", v3_acc_full: "Le détail complet, ligne par ligne",
+  v3_downpayment: "Apport sur le prix", v3_fees_pro: "Notaire, agence, courtier, NIE", v3_fees_other: "Travaux, mobilier, déplacements, imprévus",
+  v3_charges: "− Charges et gestion",
   proj_equity_full: "Dans 30 ans, votre patrimoine net atteint <strong>{e}</strong> — le bien vaut {v} et il ne reste que {d} de dette. Le locataire aura remboursé une grande partie de votre crédit.",
   proj_equity_cash: "Dans 30 ans, le bien vaudrait environ <strong>{v}</strong>, soit une plus-value estimée de <strong>{g}</strong>.",
   proj_return: "Bilan net sur 30 ans : environ <strong>{ng}</strong> — patrimoine final {e} + cash-flow locatif cumulé {cf} − apport de départ {a}.",
@@ -2993,6 +3176,10 @@ function fillZaragozaExample() {
   Object.entries(overrides).forEach(([id, v]) => { $(id).value = v; autoManual[id] = true; updateAutoBadge(id); });
   $('unpaidPct').value = 4.5;
 
+  // V2 et V3 ont leurs propres contrôles : on les resynchronise puis on calcule via leur chemin
+  if (SIM_VARIANT === 2) { v2Sync(); v2LastAutoRent = -1; v2Recalc(); return; }
+  if (SIM_VARIANT === 3) { v3RentTouched = true; v3SyncFromCanonical(); v3Calc(); return; }
+
   continueStep(1);
   continueStep(2);
   continueStep(3);
@@ -3172,13 +3359,15 @@ function calculate() {
     budgetMode, budget: budgetMode ? num('budget') : null, resale,
     surface, pricePerM2, projection
   };
-  render(lastCalc);
+  renderVariant(lastCalc);
 }
 
 /* Appelé par le bouton final : calcule puis fait défiler vers les résultats */
 function runCalc() {
   calculate();
-  if (lastCalc) requestAnimationFrame(() => $('res-content').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+  if (!lastCalc) return;
+  const target = SIM_VARIANT === 2 ? $('v2-res') : SIM_VARIANT === 3 ? $('v3-res') : $('res-content');
+  if (target) requestAnimationFrame(() => target.scrollIntoView({ behavior: 'smooth', block: 'start' }));
 }
 
 /* Graphique SVG : évolution du cash-flow mensuel (barres) à aujourd'hui / +5 / +10 / +15 / +20 ans.
@@ -3292,11 +3481,9 @@ function ownershipRings(p) {
 /* ============================================================
    7. RENDU DES RÉSULTATS
    ============================================================ */
-function render(d) {
-  $('res-empty').style.display = 'none';
-  const c = $('res-content');
-  c.style.display = 'block';
-
+/* Construit le rapport de résultats complet (utilisé tel quel par la V1,
+   et réutilisé dans une section dépliable par la V3). */
+function buildResultsHTML(d) {
   const typeLabel = d.isVPO ? T.f_type_vpo : d.isNew ? T.f_type_new : T.f_type_old;
   const infoDot = desc => `<button class="tip tip-auto" type="button" aria-label="?" onclick="event.stopPropagation();toggleTip(this)">i<span class="tip-pop">${desc}</span></button>`;
   const mainTaxDesc = (d.isNew || d.isVPO) ? (d.region.igic && !d.isVPO ? T.t_igic_d : T.t_iva_d) : T.t_itp_d;
@@ -3314,7 +3501,7 @@ function render(d) {
       ${cell(get(sc[0]))}${cell(get(sc[1]), 'col-real')}${cell(get(sc[2]))}
     </tr>`;
 
-  c.innerHTML = `
+  return `
     ${d.budgetMode ? `<div class="sim-alert sa-info" style="margin-top:20px">💰 ${T.sim_budget_banner.replace('{budget}', fmt(d.budget)).replace('{price}', fmt(d.price))}</div>` : ''}
     <div class="doc-head">
       <div class="doc-region">${d.region.name}</div>
@@ -3499,6 +3686,14 @@ function render(d) {
       <svg width="14" height="14" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="12" y1="12" x2="12" y2="18"/><line x1="9" y1="15" x2="15" y2="15"/></svg>
       ${T.btn_pdf}
     </button>`;
+}
+
+/* Rendu V1 (version actuelle) : rapport complet dans la colonne de droite. */
+function render(d) {
+  $('res-empty').style.display = 'none';
+  const c = $('res-content');
+  c.style.display = 'block';
+  c.innerHTML = buildResultsHTML(d);
 }
 
 /* ============================================================
@@ -3772,11 +3967,325 @@ $('interest-form').addEventListener('submit', async e => {
   e.target.reset();
 });
 
+/* ============================================================
+   9. VARIANTES DU SIMULATEUR (tests utilisateurs)
+   V1 = version actuelle · V2 = tableau de bord vivant · V3 = express + verdict
+   Les trois partagent le MÊME moteur de calcul : les contrôles de V2/V3
+   écrivent dans les champs canoniques de V1, puis appellent calculate().
+   ============================================================ */
+let SIM_VARIANT = 1;
+const V_DESC = {
+  1: 'Formulaire en 4 étapes, rapport détaillé',
+  2: 'Curseurs, résultat qui se met à jour en direct',
+  3: '5 questions, puis le bilan en premier'
+};
+
+function setVariant(n) {
+  SIM_VARIANT = n;
+  [1,2,3].forEach(i => {
+    const box = $('variant-' + i), btn = $('vbtn-' + i);
+    if (box) box.hidden = (i !== n);
+    if (btn) btn.classList.toggle('active', i === n);
+  });
+  $('vswitch-desc').textContent = V_DESC[n];
+  try { history.replaceState(null, '', '?v=' + n + location.hash); } catch (e) {}
+  if (n === 2) { v2Sync(); v2Recalc(); }
+  if (n === 3) { v3SyncFromCanonical(); if (lastCalc) renderV3(lastCalc); }
+}
+
+/* Remplit un <select> avec la liste des villes (utilisé par V2 et V3) */
+function fillCitySelect(id, onChange) {
+  const sel = $(id);
+  if (!sel) return;
+  sel.innerHTML = CITIES.slice().sort((a,b) => a.n.localeCompare(b.n, 'fr'))
+    .map(c => `<option value="${c.n}">${c.n}</option>`).join('');
+  sel.value = 'Saragosse';
+  sel.addEventListener('change', onChange);
+}
+
+/* ---------- VERSION 2 : tableau de bord vivant ---------- */
+let v2LastAutoRent = null;
+
+function v2Sync() {
+  // Reprend les valeurs canoniques si elles existent déjà (bascule depuis V1)
+  const p = num('price'), s = num('surface'), r = num('rentReal');
+  if (p >= 10000) $('v2-price').value = Math.min(Math.max(p, 40000), 600000);
+  if (s > 0) $('v2-surface').value = Math.min(Math.max(s, 15), 200);
+  if (r > 0) $('v2-rent').value = Math.min(Math.max(r, 200), 3000);
+  const ltv = num('ltv');
+  if (ltv > 0) $('v2-apport').value = Math.min(Math.max(100 - ltv, 10), 100);
+  if (num('years') > 0) $('v2-years').value = num('years');
+  if (num('rate') > 0) $('v2-rate').value = num('rate');
+  const c = cityLookup($('city').value);
+  if (c) $('v2-city').value = c.n;
+}
+
+function v2Recalc() {
+  const cityName = $('v2-city').value;
+  const city = cityLookup(cityName);
+  const surface = +$('v2-surface').value;
+
+  // Loyer : ré-estimé tant que l'utilisateur n'a pas bougé le curseur lui-même
+  if (city) {
+    const est = Math.round(surface * city.m2);
+    if (v2LastAutoRent === null || +$('v2-rent').value === v2LastAutoRent) {
+      $('v2-rent').value = Math.min(Math.max(est, 200), 3000);
+      v2LastAutoRent = +$('v2-rent').value;
+    }
+  }
+
+  // Écriture dans les champs canoniques
+  $('price').value = $('v2-price').value;
+  $('surface').value = surface;
+  $('city').value = cityName;
+  if (city) $('region').value = city.r;
+  $('rentReal').value = $('v2-rent').value;
+  autoManual['rentReal'] = true;
+  $('ltv').value = 100 - +$('v2-apport').value;
+  $('years').value = $('v2-years').value;
+  $('rate').value = $('v2-rate').value;
+  $('mode-price').checked = true;
+  if (!$('tg-mortgage').classList.contains('on') && +$('v2-apport').value < 100) $('tg-mortgage').classList.add('on');
+
+  // Étiquettes des curseurs
+  $('v2-price-o').textContent = fmt(+$('v2-price').value);
+  $('v2-surface-o').textContent = surface + ' m²';
+  $('v2-apport-o').textContent = $('v2-apport').value + ' %';
+  $('v2-rent-o').textContent = fmt(+$('v2-rent').value);
+  $('v2-years-o').textContent = $('v2-years').value + ' ans';
+  $('v2-rate-o').textContent = (+$('v2-rate').value).toFixed(2).replace('.', ',') + ' %';
+
+  ['notary','agency','works','furniture','community','ibi','homeIns','lifeIns'].forEach(id => { autoManual[id] = false; });
+  recalcDefaults();
+  recalcMonthly();
+  calculate();
+}
+
+function renderV2(d) {
+  const pj = d.projection;
+  const box = $('v2-res');
+  if (!box) return;
+  const k = (l, v, s, cls) => `<div class="v2-k"><div class="v2-k-l">${l}</div><div class="v2-k-v ${cls || ''}">${v}</div><div class="v2-k-s">${s}</div></div>`;
+  box.innerHTML = `
+    <div class="v2-kpis">
+      ${k('Apport nécessaire', fmt(d.cashNeeded), 'frais compris')}
+      ${k('Cash-flow / mois', fmtS(d.real.cfMonth), 'après charges et impôt', d.real.cfMonth >= 0 ? 'pos' : 'neg')}
+      ${k('Patrimoine 30 ans', fmt(pj.equityH), 'net de dette', 'pos')}
+      ${k('Rendement brut', pct(d.grossYield), 'loyers / investissement')}
+    </div>
+    <div class="v2-card">
+      <div class="v2-card-h">${T.proj_title}</div>
+      ${ownershipRings(pj)}
+      ${projectionChart(pj)}
+      <div class="proj-legend">
+        <span class="proj-lg"><span class="proj-sw proj-sw-eq"></span>${T.proj_legend_equity}</span>
+        ${pj.mort && pj.series[0].bal > 0 ? `<span class="proj-lg"><span class="proj-sw proj-sw-debt"></span>${T.proj_legend_debt}</span>` : ''}
+      </div>
+    </div>
+    <div class="v2-card">
+      <div class="v2-card-h">${T.cf_evo_title}</div>
+      ${cashflowChart(pj.cfMilestones)}
+    </div>
+    <details class="v2-detail"><summary>Voir le détail complet des frais et du cash-flow</summary>
+      <div style="padding:0 0 4px">${buildResultsHTML(d)}</div>
+    </details>`;
+}
+
+/* ---------- VERSION 3 : express + verdict + cascade ---------- */
+function v3SyncFromCanonical() {
+  const p = num('price'), s = num('surface'), r = num('rentReal');
+  if (p >= 10000) $('v3-price').value = p;
+  if (s > 0) $('v3-surface').value = s;
+  if (r > 0) $('v3-rent').value = r;
+  const ltv = num('ltv');
+  if (ltv > 0) $('v3-apport').value = Math.min(Math.max(100 - ltv, 10), 100);
+  const c = cityLookup($('city').value);
+  if (c) $('v3-city').value = c.n;
+  v3UpdateLabels();
+}
+
+function v3UpdateLabels() {
+  $('v3-apport-o').textContent = $('v3-apport').value + ' % du prix';
+}
+
+/* Ré-estime le loyer quand ville ou surface change, si le champ n'a pas été saisi à la main */
+let v3RentTouched = false;
+function v3EstimateRent() {
+  if (v3RentTouched) return;
+  const city = cityLookup($('v3-city').value), s = +$('v3-surface').value;
+  if (city && s > 0) {
+    $('v3-rent').value = Math.round(s * city.m2);
+    const b = $('v3-rent-badge');
+    if (b) { b.style.display = ''; b.textContent = T.badge_auto; }
+  }
+}
+
+function v3Calc() {
+  const price = +$('v3-price').value;
+  if (!(price >= 10000)) { $('v3-price').classList.add('error'); $('v3-price').focus(); return; }
+  $('v3-price').classList.remove('error');
+  const city = cityLookup($('v3-city').value);
+
+  $('price').value = price;
+  $('surface').value = $('v3-surface').value || '';
+  $('city').value = $('v3-city').value;
+  if (city) $('region').value = city.r;
+  $('rentReal').value = $('v3-rent').value;
+  autoManual['rentReal'] = true;
+  $('ltv').value = 100 - +$('v3-apport').value;
+  $('mode-price').checked = true;
+  if (+$('v3-apport').value < 100) $('tg-mortgage').classList.add('on');
+
+  ['notary','agency','works','furniture','community','ibi','homeIns','lifeIns'].forEach(id => { autoManual[id] = false; });
+  recalcDefaults();
+  recalcMonthly();
+  calculate();
+  requestAnimationFrame(() => $('v3-res').scrollIntoView({ behavior: 'smooth', block: 'start' }));
+}
+
+/* Cascade : d'où viennent les gains (apport → capital amorti → plus-value → loyers) */
+function wealthWaterfall(d) {
+  const pj = d.projection;
+  const steps = [
+    { l: T.wf_apport,   sub: T.wf_apport_s,   v: -d.cashNeeded,          c: 'var(--red)' },
+    { l: T.wf_equity0,  sub: T.wf_equity0_s,  v: d.price - d.loan,       c: 'var(--navy)' },
+    { l: T.wf_paid,     sub: T.wf_paid_s,     v: pj.series[pj.horizon].paid, c: 'var(--gold-ink)' },
+    { l: T.wf_gain,     sub: T.wf_gain_s.replace('{r}', pj.rate), v: pj.capitalGainH, c: 'var(--green)' },
+    { l: T.wf_cf,       sub: T.wf_cf_s,       v: pj.cumCF,               c: 'var(--green)' }
+  ].filter(s => Math.abs(s.v) > 0.5);
+
+  const W = 400, H = 200, pT = 28, pB = 42, pL = 4, pR = 4;
+  const total = steps.reduce((a, s) => a + s.v, 0);
+  let run = 0;
+  const lv = steps.map(s => { const from = run; run += s.v; return { from, to: run }; });
+  const vmax = Math.max(...lv.map(l => Math.max(l.from, l.to)), total, 0);
+  const vmin = Math.min(...lv.map(l => Math.min(l.from, l.to)), 0);
+  const span = (vmax - vmin) || 1, plotH = H - pT - pB;
+  const Y = v => pT + (1 - (v - vmin) / span) * plotH;
+  const n = steps.length + 1, slot = (W - pL - pR) / n, bw = Math.min(38, slot * 0.58);
+
+  let out = `<line x1="${pL}" y1="${Y(0).toFixed(1)}" x2="${W - pR}" y2="${Y(0).toFixed(1)}" stroke="var(--gray-200)" stroke-width="1"/>`;
+  steps.forEach((s, i) => {
+    const cx = pL + slot * i + slot / 2, x = cx - bw / 2;
+    const yA = Y(lv[i].from), yB = Y(lv[i].to);
+    const top = Math.min(yA, yB), h = Math.max(Math.abs(yB - yA), 2);
+    out += `<rect x="${x.toFixed(1)}" y="${top.toFixed(1)}" width="${bw.toFixed(1)}" height="${h.toFixed(1)}" rx="2" fill="${s.c}"/>`
+      + `<text x="${cx.toFixed(1)}" y="${(top - 5).toFixed(1)}" text-anchor="middle" font-size="8" font-weight="700" fill="var(--gray-900)">${fmtS(Math.round(s.v))}</text>`
+      + `<text x="${cx.toFixed(1)}" y="${H - 24}" text-anchor="middle" font-size="7" fill="var(--gray-700)">${s.l}</text>`
+      + `<text x="${cx.toFixed(1)}" y="${H - 15}" text-anchor="middle" font-size="6" fill="var(--gray-500)">${s.sub}</text>`;
+    if (i < steps.length - 1) {
+      const nx = pL + slot * (i + 1) + slot / 2 - bw / 2;
+      out += `<line x1="${(x + bw).toFixed(1)}" y1="${yB.toFixed(1)}" x2="${nx.toFixed(1)}" y2="${yB.toFixed(1)}" stroke="var(--gray-300)" stroke-width="1" stroke-dasharray="2 2"/>`;
+    }
+  });
+  const cxT = pL + slot * steps.length + slot / 2, xT = cxT - bw / 2, yT = Y(total), y0 = Y(0);
+  out += `<rect x="${xT.toFixed(1)}" y="${Math.min(yT, y0).toFixed(1)}" width="${bw.toFixed(1)}" height="${Math.max(Math.abs(y0 - yT), 2).toFixed(1)}" rx="2" fill="var(--navy)"/>`
+    + `<text x="${cxT.toFixed(1)}" y="${(Math.min(yT, y0) - 5).toFixed(1)}" text-anchor="middle" font-size="9" font-weight="700" fill="var(--green)">${fmtS(Math.round(total))}</text>`
+    + `<text x="${cxT.toFixed(1)}" y="${H - 24}" text-anchor="middle" font-size="7.5" font-weight="700" fill="var(--gray-900)">${T.wf_total}</text>`
+    + `<text x="${cxT.toFixed(1)}" y="${H - 15}" text-anchor="middle" font-size="6" fill="var(--gray-500)">${T.wf_total_s.replace('{h}', pj.horizon)}</text>`;
+  return `<svg viewBox="0 0 ${W} ${H}" width="100%" style="display:block" role="img" aria-label="${T.wf_title}">${out}</svg>`;
+}
+
+function renderV3(d) {
+  const box = $('v3-res');
+  if (!box) return;
+  const pj = d.projection;
+  const mult = d.cashNeeded > 0 ? pj.netGain / d.cashNeeded : 0;
+  const showDebt = pj.mort && pj.series[0].bal > 0;
+  const row = (l, v) => `<div class="brow"><div><div class="bname">${l}</div></div><div class="bamt">${fmt(v)}</div></div>`;
+
+  box.innerHTML = `
+    <div class="v3-hero">
+      <div class="v3-hero-l">${T.v3_hero_l.replace('{h}', pj.horizon)}</div>
+      <div class="v3-hero-v">${fmtS(Math.round(pj.netGain))}</div>
+      <div class="v3-hero-s">${T.v3_hero_s
+        .replace('{a}', '<strong>' + fmt(d.cashNeeded) + '</strong>')
+        .replace('{e}', '<strong>' + fmt(pj.equityH) + '</strong>')
+        .replace('{cf}', '<strong>' + fmt(pj.cumCF) + '</strong>')}</div>
+      <div class="v3-hero-row">
+        <div class="v3-hs"><b>×${mult.toFixed(1).replace('.', ',')}</b><span>${T.v3_mult}</span></div>
+        <div class="v3-hs"><b>${fmtS(d.real.cfMonth)}</b><span>${T.v3_cf}</span></div>
+        ${showDebt ? `<div class="v3-hs"><b>${T.ring_year_n.replace('{n}', pj.loanYears)}</b><span>${T.v3_payoff}</span></div>` : ''}
+      </div>
+    </div>
+
+    <div class="v3-sec">
+      <div class="v3-sec-h">${T.wf_title}</div>
+      <div style="padding:8px 14px 14px">${wealthWaterfall(d)}</div>
+      ${showDebt ? `<div class="sim-alert sa-good" style="margin:0 18px 16px">${T.wf_note.replace('{p}', '<strong>' + fmt(pj.series[pj.horizon].paid) + '</strong>')}</div>` : ''}
+    </div>
+
+    <div class="v3-sec">
+      <details class="v3-acc"><summary>${T.v3_acc_cost}<span class="v3-amt">${fmt(d.cashNeeded)}</span></summary>
+        <div class="v3-acc-body">
+          ${d.mort && d.loan > 0 ? row(T.v3_downpayment, d.price - d.loan) : row(T.dm_price.replace(/\s*:\s*$/, ''), d.price)}
+          ${row(d.mainTaxName, d.mainTax)}
+          ${d.hasAJD ? row(T.t_ajd_n, d.ajd) : ''}
+          ${row(T.v3_fees_pro, d.notary + d.agency + d.brokerFee + d.tasacion + NIE_COST)}
+          ${row(T.v3_fees_other, d.works + d.furniture + d.contingency + d.travel)}
+        </div>
+      </details>
+      <details class="v3-acc"><summary>${T.v3_acc_year}<span class="v3-amt">${fmtS(d.real.cfYear)}</span></summary>
+        <div class="v3-acc-body">
+          <table class="scen-tbl">
+            <tbody>
+              <tr><td>${T.r_net_rent}</td><td>${fmtS(d.real.collected)}</td></tr>
+              ${d.mort ? `<tr><td>${T.r_mortgage}</td><td>${fmtS(-d.real.mortgageY)}</td></tr>` : ''}
+              <tr><td>${T.v3_charges}</td><td>${fmtS(-(d.community + d.ibi + d.insurance + d.real.mgmt + d.real.unpaid))}</td></tr>
+              <tr><td>${T.r_irnr}</td><td>${fmtS(-d.real.irnr)}</td></tr>
+              <tr class="cf"><td>${T.r_cf_month}</td><td class="${d.real.cfMonth >= 0 ? 'pos' : 'neg'}">${fmtS(d.real.cfMonth)}</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </details>
+      <details class="v3-acc"><summary>${T.v3_acc_wealth}<span class="v3-amt">${fmt(pj.equityH)}</span></summary>
+        <div class="v3-acc-body">
+          ${ownershipRings(pj)}
+          ${projectionChart(pj)}
+          <div class="proj-legend">
+            <span class="proj-lg"><span class="proj-sw proj-sw-eq"></span>${T.proj_legend_equity}</span>
+            ${showDebt ? `<span class="proj-lg"><span class="proj-sw proj-sw-debt"></span>${T.proj_legend_debt}</span>` : ''}
+          </div>
+        </div>
+      </details>
+      <details class="v3-acc"><summary>${T.v3_acc_full}</summary>
+        <div class="v3-acc-body" style="padding-left:0;padding-right:0">${buildResultsHTML(d)}</div>
+      </details>
+    </div>`;
+}
+
+/* Aiguillage du rendu selon la variante active */
+function renderVariant(d) {
+  if (SIM_VARIANT === 2) renderV2(d);
+  else if (SIM_VARIANT === 3) renderV3(d);
+  else render(d);
+}
+
+/* Branchement des contrôles V2 / V3 */
+(function initVariants() {
+  fillCitySelect('v2-city', () => { v2LastAutoRent = null; v2Recalc(); });
+  fillCitySelect('v3-city', () => { v3RentTouched = false; v3EstimateRent(); });
+
+  ['v2-price','v2-surface','v2-apport','v2-years','v2-rate'].forEach(id =>
+    $(id).addEventListener('input', v2Recalc));
+  $('v2-rent').addEventListener('input', () => { v2LastAutoRent = -1; v2Recalc(); });
+
+  $('v3-surface').addEventListener('input', v3EstimateRent);
+  $('v3-rent').addEventListener('input', () => {
+    v3RentTouched = true;
+    const b = $('v3-rent-badge'); if (b) b.style.display = 'none';
+  });
+  $('v3-apport').addEventListener('input', v3UpdateLabels);
+})();
+
 (function init() {
   // EN/ES temporairement désactivés (voir boutons grisés dans .lang-switch) : on force FR jusqu'à nouvel ordre.
   setLang('fr');
   recalcDefaults();
   recalcMonthly();
+  // Après setLang : le sélecteur de région est peuplé, calculate() peut aboutir.
+  const v = new URLSearchParams(location.search).get('v');
+  setVariant(v === '2' ? 2 : v === '3' ? 3 : 1);
 })();
 </script>
 </body>
