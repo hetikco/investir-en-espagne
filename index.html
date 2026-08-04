@@ -3642,7 +3642,7 @@ document.addEventListener('click', e => {
 /* ============================================================
    À PERSONNALISER QUAND DISPONIBLE
    ============================================================ */
-const FORMSPREE_URL = 'https://formspree.io/f/YOUR_FORM_ID';
+const FORMSPREE_URL = 'https://formspree.io/f/mwleepzn';
 const CONTACT_EMAIL = 'hetik.consulting@gmail.com';
 
 function fillContactLinks() {
@@ -3667,7 +3667,7 @@ $('interest-form').addEventListener('submit', async e => {
   e.preventDefault();
   const msg = $('interest-msg');
   const visitorEmail = $('interest-email').value.trim();
-  makeChecklistPDF();                       // le PDF se télécharge toujours
+  try { makeChecklistPDF(); } catch (err) {}   // le PDF se télécharge toujours (n'empêche pas la capture si ça échoue)
   msg.textContent = T.interest_success;
   msg.className = 'interest-msg show ok';
   // Capture de l'email si Formspree est configuré ; sinon, filet de secours par mailto (sans bloquer le téléchargement)
