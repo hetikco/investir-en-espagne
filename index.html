@@ -617,6 +617,10 @@ input[type=number] { -moz-appearance: textfield; }
 .ring-pct-sim b { font-family: var(--font-title); font-size: 13px; color: var(--gray-900); }
 .ring-lbl-sim { font-size: 10px; color: var(--gray-500); text-transform: uppercase; letter-spacing: .03em; }
 .ring-val-sim { font-size: 11.5px; font-weight: 700; color: var(--navy); margin-top: 1px; }
+.ring-foot { display: flex; justify-content: center; gap: 22px; flex-wrap: wrap; margin: 2px 0 18px; padding-top: 14px; border-top: 1px solid var(--gray-100); }
+.foot-stat-sim { text-align: center; }
+.foot-stat-sim b { display: block; font-family: var(--font-title); font-size: 14px; color: var(--green); }
+.foot-stat-sim span { font-size: 10px; color: var(--gray-500); text-transform: uppercase; letter-spacing: .03em; }
 
 .btn-pdf {
   display: flex; align-items: center; justify-content: center; gap: 8px;
@@ -1378,6 +1382,7 @@ I18N.fr = {
   proj_title: "Votre patrimoine sur 30 ans",
   proj_x_now: "aujourd'hui", proj_x_mid: "+15 ans", proj_x_future: "+30 ans",
   proj_legend_equity: "Patrimoine net", proj_legend_debt: "Capital restant dû", proj_legend_payoff: "Prêt soldé",
+  ring_foot_paid: "remboursés par le locataire", ring_foot_gain: "plus-value du bien", ring_foot_payoff: "prêt intégralement soldé", ring_year_n: "An {n}",
   proj_equity_full: "Dans 30 ans, votre patrimoine net atteint <strong>{e}</strong> — le bien vaut {v} et il ne reste que {d} de dette. Le locataire aura remboursé une grande partie de votre crédit.",
   proj_equity_cash: "Dans 30 ans, le bien vaudrait environ <strong>{v}</strong>, soit une plus-value estimée de <strong>{g}</strong>.",
   proj_return: "Bilan net sur 30 ans : environ <strong>{ng}</strong> — patrimoine final {e} + cash-flow locatif cumulé {cf} − apport de départ {a}.",
@@ -2982,6 +2987,12 @@ function fillZaragozaExample() {
   $('t-old').checked = true;
   AUTO_FIELDS.forEach(id => { autoManual[id] = false; });
   recalcDefaults();
+
+  // Données réelles connues pour cet achat — écrasent les estimations automatiques
+  const overrides = { rentReal: 780, agency: 4000, works: 2000, furniture: 1000, community: 270 };
+  Object.entries(overrides).forEach(([id, v]) => { $(id).value = v; autoManual[id] = true; updateAutoBadge(id); });
+  $('unpaidPct').value = 4.5;
+
   continueStep(1);
   continueStep(2);
   continueStep(3);
@@ -3265,7 +3276,17 @@ function ownershipRings(p) {
       <div class="ring-val-sim">${fmt(Math.round(s.equity))}</div>
     </div>`;
   };
-  return `<div class="ring-row">${years.map(ring).join('')}</div>`;
+  const showDebt = p.mort && p.series[0].bal > 0;
+  const foot = showDebt ? `
+    <div class="ring-foot">
+      <div class="foot-stat-sim"><b>+${fmt(Math.round(p.series[p.horizon].paid))}</b><span>${T.ring_foot_paid}</span></div>
+      <div class="foot-stat-sim"><b>+${fmt(Math.round(p.capitalGainH))}</b><span>${T.ring_foot_gain}</span></div>
+      <div class="foot-stat-sim"><b>${T.ring_year_n.replace('{n}', p.loanYears)}</b><span>${T.ring_foot_payoff}</span></div>
+    </div>` : `
+    <div class="ring-foot">
+      <div class="foot-stat-sim"><b>+${fmt(Math.round(p.capitalGainH))}</b><span>${T.ring_foot_gain}</span></div>
+    </div>`;
+  return `<div class="ring-row">${years.map(ring).join('')}</div>${foot}`;
 }
 
 /* ============================================================
