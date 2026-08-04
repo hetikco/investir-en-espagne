@@ -1171,13 +1171,16 @@ const NIE_COST  = 9.64;      // Tasa modelo 790-012
    observé en réel sur un 54 m² non meublé, pas particulièrement bien placé). Prix d'achat : 6 villes
    en valeur directe (Madrid, Barcelone, Malaga, Bilbao, Valence, Saint-Sébastien), les autres recalées
    au prorata de la hausse région — méthode moins robuste que pour les loyers (pas de référence région
-   déjà présente dans les données d'origine, estimation dérivée d'un petit échantillon de villes). */
+   déjà présente dans les données d'origine, estimation dérivée d'un petit échantillon de villes).
+   Saragosse recalé à 1900 €/m² : transaction réelle rapportée à 1815 €/m² (54 m², RDC + terrasse,
+   quartier moyen, 98 k€) — légèrement ajusté à la hausse pour compenser la décote RDC (~8-15 % vs un
+   étage) partiellement compensée par la terrasse. */
 const CITIES = [
   { n:'Madrid', r:'madrid', m2:23.7, saleM2:6300 },
   { n:'Barcelone', r:'cataluna', m2:23, saleM2:5300 },
   { n:'Valence', r:'valenciana', m2:16.7, saleM2:3700 },
   { n:'Séville', r:'andalucia', m2:15, saleM2:3000 },
-  { n:'Saragosse', r:'aragon', m2:14, saleM2:1980 },
+  { n:'Saragosse', r:'aragon', m2:14, saleM2:1900 },
   { n:'Malaga', r:'andalucia', m2:17.5, saleM2:4150 },
   { n:'Murcie', r:'murcia', m2:11.5, saleM2:2200 },
   { n:'Palma de Majorque', r:'baleares', m2:19.1, saleM2:4200 },
