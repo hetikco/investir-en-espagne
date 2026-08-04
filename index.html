@@ -407,6 +407,13 @@ body {
 
 /* ---------- SIMULATOR ---------- */
 .sim-main { max-width: var(--maxw); margin: 0 auto; padding: 28px 20px 70px; }
+.dev-fill-bar { margin-bottom: 14px; }
+.dev-fill-btn {
+  font-family: var(--font-body); font-size: 12px; font-weight: 600; color: var(--amber);
+  background: var(--amber-bg); border: 1px dashed #FDE68A; border-radius: var(--radius);
+  padding: 7px 12px; cursor: pointer;
+}
+.dev-fill-btn:hover { background: #FEF3C7; }
 .sim-grid { display: grid; grid-template-columns: minmax(0,1fr) minmax(0,1.05fr); gap: 22px; align-items: stretch; }
 @media (max-width: 900px) { .sim-grid { grid-template-columns: minmax(0,1fr); } }
 /* Colonne résultats collante : reste visible pendant qu'on remplit le formulaire à gauche */
@@ -806,6 +813,10 @@ input.sr { width: 1px; height: 1px; }
   </section>
 
   <main class="sim-main">
+    <!-- Bouton de test dev — préremplit avec l'appartement réel de Saragosse pour tester vite. À retirer si non conservé. -->
+    <div class="dev-fill-bar">
+      <button type="button" class="dev-fill-btn" onclick="fillZaragozaExample()">🧪 Exemple : appartement Saragosse</button>
+    </div>
     <div class="sim-grid">
       <!-- FORM COLUMN -->
       <div>
@@ -980,19 +991,10 @@ input.sr { width: 1px; height: 1px; }
           <div class="card-body">
             <div class="subhead" data-i18n="sub_rents"></div>
             <div class="fhint" id="rent-source-hint" style="margin-bottom:8px"></div>
-            <div class="frow3">
-              <div class="field">
-                <label for="rentMin"><span data-i18n="f_rent_min"></span><span class="auto-badge" id="rentMin-badge" data-i18n="badge_auto"></span></label>
-                <div class="iwrap"><input type="number" id="rentMin" value="" min="0" step="10"><span class="iunit">€</span></div>
-              </div>
-              <div class="field">
-                <label for="rentReal"><span data-i18n="f_rent_real"></span><span class="auto-badge" id="rentReal-badge" data-i18n="badge_auto"></span></label>
-                <div class="iwrap"><input type="number" id="rentReal" value="" min="0" step="10"><span class="iunit">€</span></div>
-              </div>
-              <div class="field">
-                <label for="rentMax"><span data-i18n="f_rent_max"></span><span class="auto-badge" id="rentMax-badge" data-i18n="badge_auto"></span></label>
-                <div class="iwrap"><input type="number" id="rentMax" value="" min="0" step="10"><span class="iunit">€</span></div>
-              </div>
+            <div class="field">
+              <label for="rentReal"><span data-i18n="f_rent_real"></span><span class="auto-badge" id="rentReal-badge" data-i18n="badge_auto"></span></label>
+              <div class="iwrap"><input type="number" id="rentReal" value="" min="0" step="10"><span class="iunit">€</span></div>
+              <div class="fhint" data-i18n="f_rent_real_hint"></div>
             </div>
 
             <div class="divider"></div>
@@ -1354,8 +1356,9 @@ I18N.fr = {
   f_ltv: "Quotité (LTV)", f_rate: "Taux annuel", f_years: "Durée", unit_years: "ans",
   f_monthly: "Mensualité", badge_auto: "auto", f_monthly_hint: "Calculée automatiquement — modifiable si votre banque vous a donné un chiffre exact",
   f_broker_fix: "Courtier (fixe)", f_broker_pct: "Courtier (% du prêt)", f_tasacion: "Tasación (expertise)",
-  sub_rents: "Loyer mensuel — trois scénarios", sub_charges: "Charges annuelles",
-  f_rent_min: "Minimum", f_rent_real: "Réaliste", f_rent_max: "Maximum",
+  sub_rents: "Loyer mensuel", sub_charges: "Charges annuelles",
+  f_rent_min: "Minimum", f_rent_real: "Loyer mensuel estimé", f_rent_max: "Maximum",
+  f_rent_real_hint: "Les scénarios min. et max. (±10 %) sont calculés automatiquement pour l'analyse de sensibilité ci-dessous.",
   f_community: "Charges de copropriété", f_ibi: "IBI (taxe foncière)",
   f_home_ins: "Assurance habitation", f_life_ins: "Assurance emprunteur",
   f_mgmt: "Gestion locative", f_unpaid: "Assur. loyers impayés", f_vacancy: "Vacance locative",
@@ -2740,7 +2743,7 @@ function updateMonthlyBadge() {
 /* ============================================================
    5b. VALEURS PAR DÉFAUT DYNAMIQUES
    ============================================================ */
-const AUTO_FIELDS = ['notary','agency','works','furniture','community','ibi','homeIns','lifeIns','rentMin','rentReal','rentMax'];
+const AUTO_FIELDS = ['notary','agency','works','furniture','community','ibi','homeIns','lifeIns','rentReal'];
 let autoManual = {};
 
 function updateAutoBadge(id) {
@@ -2802,16 +2805,14 @@ function recalcDefaults() {
 
   const city = cityLookup($('city').value);
   const hint = $('rent-source-hint');
-  const rentBadges = v => ['rentMin','rentReal','rentMax'].forEach(id => { const b = $(id+'-badge'); if (b) b.style.display = v; });
+  const rentBadges = v => { const b = $('rentReal-badge'); if (b) b.style.display = v; };
   if (city && surface) {
     const m2 = city.m2;
     setAuto('rentReal', surface * m2);
-    setAuto('rentMin', surface * m2 * 0.9);
-    setAuto('rentMax', surface * m2 * 1.1);
     rentBadges('');
     if (hint) hint.textContent = T.rent_source_hint.replace('{rate}', m2).replace('{city}', city.n);
   } else {
-    ['rentMin','rentReal','rentMax'].forEach(id => { if (!autoManual[id]) $(id).value = ''; });
+    if (!autoManual['rentReal']) $('rentReal').value = '';
     rentBadges('none');
     if (hint) hint.textContent = !city ? T.rent_need_city : T.rent_need_surface;
   }
@@ -2967,6 +2968,26 @@ function continueStep(n) {
   }
 }
 
+/* Bouton de test dev : préremplit avec l'appartement réel de Saragosse (54 m², 98 000 €, ancien)
+   et laisse l'outil auto-compléter le reste (loyer, frais...) comme pour un usage normal. */
+function fillZaragozaExample() {
+  $('mode-price').checked = true;
+  $('field-price').style.display = '';
+  $('field-budget').style.display = 'none';
+  $('price').value = 98000;
+  $('surface').value = 54;
+  $('city').value = 'Saragosse';
+  const city = cityLookup('Saragosse');
+  if (city) $('region').value = city.r;
+  $('t-old').checked = true;
+  AUTO_FIELDS.forEach(id => { autoManual[id] = false; });
+  recalcDefaults();
+  continueStep(1);
+  continueStep(2);
+  continueStep(3);
+  runCalc();
+}
+
 function calculate() {
   let ok = true;
   const regionId = $('region').value;
@@ -3059,8 +3080,9 @@ function calculate() {
   const insurance = num('homeIns') + (mort ? num('lifeIns') : 0);
   const mgmtPct = num('mgmtPct') / 100, unpaidPct = num('unpaidPct') / 100, vacPct = num('vacancyPct') / 100;
 
+  const rentReal = num('rentReal');
   const scenarios = ['min','real','max'].map(k => {
-    const rent = num(k === 'min' ? 'rentMin' : k === 'real' ? 'rentReal' : 'rentMax');
+    const rent = k === 'min' ? rentReal * 0.9 : k === 'real' ? rentReal : rentReal * 1.1;
     const gross = rent * 12;
     const vacancy = gross * vacPct;
     const collected = gross - vacancy;
