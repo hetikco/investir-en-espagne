@@ -1145,7 +1145,7 @@ const REGIONS = {
   andalucia:          { name: 'Andalousie',             itp: 0.07,        ajd: 0.012,  note: 'note_and', rentM2: 12 },
   aragon:             { name: 'Aragon',                 itp: 0.08,        ajd: 0.015, rentM2: 11 },
   asturias:           { name: 'Asturies',                itp: 0.08,        ajd: 0.012, rentM2: 12 },
-  baleares:           { name: 'Îles Baléares',           itp: 'tiers', tiers: [[400000,0.08],[600000,0.09],[1000000,0.10],[Infinity,0.115]], ajd: 0.012, note: 'note_bal', rentM2: 20 },
+  baleares:           { name: 'Îles Baléares',           itp: 'tiers', tiers: [[400000,0.08],[600000,0.09],[1000000,0.10],[Infinity,0.115]], ajd: 0.015, note: 'note_bal', rentM2: 20 },
   canarias:           { name: 'Îles Canaries',           itp: 0.065,       ajd: 0.01, igic: true, ivaRate: 0.07, note: 'note_can', rentM2: 16 },
   cantabria:          { name: 'Cantabrie',              itp: 0.10,        ajd: 0.015, rentM2: 14 },
   castilla_la_mancha: { name: 'Castille-La Manche',     itp: 0.09,        ajd: 0.015, rentM2: 8.5 },
@@ -1156,7 +1156,7 @@ const REGIONS = {
   galicia:            { name: 'Galice',                 itp: 0.10,        ajd: 0.015, rentM2: 10.5 },
   la_rioja:           { name: 'La Rioja',               itp: 0.07,        ajd: 0.01, rentM2: 10 },
   madrid:             { name: 'Communauté de Madrid',   itp: 0.06,        ajd: 0.0075, note: 'note_mad', rentM2: 21.5 },
-  murcia:             { name: 'Région de Murcie',       itp: 0.08,        ajd: 0.015, rentM2: 10 },
+  murcia:             { name: 'Région de Murcie',       itp: 0.08,        ajd: 0.02, rentM2: 10 },
   navarra:            { name: 'Navarre',                itp: 0.06,        ajd: 0.005, note: 'note_nav', rentM2: 12.5 },
   pais_vasco:         { name: 'Pays basque',            itp: 0.07,        ajd: 0.005, note: 'note_pv', rentM2: 15 }
 };
@@ -1165,55 +1165,58 @@ const IRNR_RATE = 0.19;      // Taux IRNR résidents UE/EEE
 const NIE_COST  = 9.64;      // Tasa modelo 790-012
 
 /* Villes : ordres de grandeur indicatifs 07/2026. n=nom (français), r=id région,
-   m2=loyer €/m²/mois, saleM2=prix d'achat €/m². Loyers recoupés sur les indices Idealista/Fotocasa
-   (juin-juil. 2026) : quelques villes en valeur directe, les autres recalées au prorata de la hausse
-   constatée sur leur région (méthode validée sur Saragosse : 14 €/m² estimé vs 14,4 €/m² observé en réel
-   sur un 54 m² non meublé, pas particulièrement bien placé). Prix d'achat non revérifiés dans cette passe. */
+   m2=loyer €/m²/mois, saleM2=prix d'achat €/m². Recoupés sur les indices Idealista/Fotocasa
+   (juin-juil. 2026). Loyers : quelques villes en valeur directe, les autres recalées au prorata de
+   la hausse constatée sur leur région (méthode validée sur Saragosse : 14 €/m² estimé vs 14,4 €/m²
+   observé en réel sur un 54 m² non meublé, pas particulièrement bien placé). Prix d'achat : 6 villes
+   en valeur directe (Madrid, Barcelone, Malaga, Bilbao, Valence, Saint-Sébastien), les autres recalées
+   au prorata de la hausse région — méthode moins robuste que pour les loyers (pas de référence région
+   déjà présente dans les données d'origine, estimation dérivée d'un petit échantillon de villes). */
 const CITIES = [
-  { n:'Madrid', r:'madrid', m2:23.7, saleM2:4300 },
-  { n:'Barcelone', r:'cataluna', m2:23, saleM2:4400 },
-  { n:'Valence', r:'valenciana', m2:16.7, saleM2:2400 },
-  { n:'Séville', r:'andalucia', m2:15, saleM2:2450 },
-  { n:'Saragosse', r:'aragon', m2:14, saleM2:1950 },
-  { n:'Malaga', r:'andalucia', m2:17.5, saleM2:3000 },
-  { n:'Murcie', r:'murcia', m2:11.5, saleM2:1350 },
-  { n:'Palma de Majorque', r:'baleares', m2:19.1, saleM2:3600 },
-  { n:'Las Palmas de Gran Canaria', r:'canarias', m2:17.5, saleM2:2100 },
-  { n:'Bilbao', r:'pais_vasco', m2:16, saleM2:3050 },
-  { n:'Alicante', r:'valenciana', m2:19, saleM2:1950 },
-  { n:'Cordoue', r:'andalucia', m2:11, saleM2:1650 },
-  { n:'Valladolid', r:'castilla_leon', m2:14, saleM2:1750 },
-  { n:'Vigo', r:'galicia', m2:15, saleM2:2050 },
-  { n:'Gijón', r:'asturias', m2:16, saleM2:1950 },
-  { n:'Grenade', r:'andalucia', m2:13, saleM2:2050 },
-  { n:'La Corogne', r:'galicia', m2:15, saleM2:2300 },
+  { n:'Madrid', r:'madrid', m2:23.7, saleM2:6300 },
+  { n:'Barcelone', r:'cataluna', m2:23, saleM2:5300 },
+  { n:'Valence', r:'valenciana', m2:16.7, saleM2:3700 },
+  { n:'Séville', r:'andalucia', m2:15, saleM2:3000 },
+  { n:'Saragosse', r:'aragon', m2:14, saleM2:1980 },
+  { n:'Malaga', r:'andalucia', m2:17.5, saleM2:4150 },
+  { n:'Murcie', r:'murcia', m2:11.5, saleM2:2200 },
+  { n:'Palma de Majorque', r:'baleares', m2:19.1, saleM2:4200 },
+  { n:'Las Palmas de Gran Canaria', r:'canarias', m2:17.5, saleM2:3300 },
+  { n:'Bilbao', r:'pais_vasco', m2:16, saleM2:4100 },
+  { n:'Alicante', r:'valenciana', m2:19, saleM2:2850 },
+  { n:'Cordoue', r:'andalucia', m2:11, saleM2:2000 },
+  { n:'Valladolid', r:'castilla_leon', m2:14, saleM2:1350 },
+  { n:'Vigo', r:'galicia', m2:15, saleM2:2150 },
+  { n:'Gijón', r:'asturias', m2:16, saleM2:2400 },
+  { n:'Grenade', r:'andalucia', m2:13, saleM2:2500 },
+  { n:'La Corogne', r:'galicia', m2:15, saleM2:2400 },
   { n:'Vitoria-Gasteiz', r:'pais_vasco', m2:13.5, saleM2:2500 },
-  { n:'Santander', r:'cantabria', m2:19, saleM2:2650 },
-  { n:'Saint-Sébastien', r:'pais_vasco', m2:18.4, saleM2:5200 },
-  { n:'Pampelune', r:'navarra', m2:17, saleM2:2350 },
-  { n:'Almería', r:'andalucia', m2:10.5, saleM2:1450 },
-  { n:'Castellón de la Plana', r:'valenciana', m2:15, saleM2:1400 },
-  { n:'Tarragone', r:'cataluna', m2:14, saleM2:1950 },
-  { n:'Gérone', r:'cataluna', m2:15.5, saleM2:2500 },
-  { n:'Salamanque', r:'castilla_leon', m2:14, saleM2:2000 },
-  { n:'Logroño', r:'la_rioja', m2:14, saleM2:1900 },
-  { n:'Badajoz', r:'extremadura', m2:9.5, saleM2:1250 },
-  { n:'Tolède', r:'castilla_la_mancha', m2:12, saleM2:1650 },
-  { n:'Albacete', r:'castilla_la_mancha', m2:10.5, saleM2:1400 },
-  { n:'Marbella', r:'andalucia', m2:18.5, saleM2:3900 },
-  { n:'Sitges', r:'cataluna', m2:21.5, saleM2:4600 },
-  { n:'Ibiza', r:'baleares', m2:27.5, saleM2:5600 },
-  { n:'Torrevieja', r:'valenciana', m2:16.5, saleM2:1650 },
-  { n:'Benidorm', r:'valenciana', m2:20, saleM2:2400 },
-  { n:'Santa Cruz de Tenerife', r:'canarias', m2:17.5, saleM2:2100 },
-  { n:'Oviedo', r:'asturias', m2:16, saleM2:1900 },
-  { n:'Huelva', r:'andalucia', m2:10.5, saleM2:1350 },
-  { n:'Cadix', r:'andalucia', m2:15, saleM2:2600 },
-  { n:'León', r:'castilla_leon', m2:12.5, saleM2:1500 },
-  { n:'Lleida', r:'cataluna', m2:10, saleM2:1300 },
-  { n:'Fuengirola', r:'andalucia', m2:17.5, saleM2:3100 },
-  { n:'Estepona', r:'andalucia', m2:17.5, saleM2:3300 },
-  { n:'Jerez de la Frontera', r:'andalucia', m2:13, saleM2:1800 }
+  { n:'Santander', r:'cantabria', m2:19, saleM2:2830 },
+  { n:'Saint-Sébastien', r:'pais_vasco', m2:18.4, saleM2:6400 },
+  { n:'Pampelune', r:'navarra', m2:17, saleM2:2450 },
+  { n:'Almería', r:'andalucia', m2:10.5, saleM2:1780 },
+  { n:'Castellón de la Plana', r:'valenciana', m2:15, saleM2:2050 },
+  { n:'Tarragone', r:'cataluna', m2:14, saleM2:2280 },
+  { n:'Gérone', r:'cataluna', m2:15.5, saleM2:2900 },
+  { n:'Salamanque', r:'castilla_leon', m2:14, saleM2:1550 },
+  { n:'Logroño', r:'la_rioja', m2:14, saleM2:2000 },
+  { n:'Badajoz', r:'extremadura', m2:9.5, saleM2:1080 },
+  { n:'Tolède', r:'castilla_la_mancha', m2:12, saleM2:1200 },
+  { n:'Albacete', r:'castilla_la_mancha', m2:10.5, saleM2:1020 },
+  { n:'Marbella', r:'andalucia', m2:18.5, saleM2:4800 },
+  { n:'Sitges', r:'cataluna', m2:21.5, saleM2:5400 },
+  { n:'Ibiza', r:'baleares', m2:27.5, saleM2:6500 },
+  { n:'Torrevieja', r:'valenciana', m2:16.5, saleM2:2400 },
+  { n:'Benidorm', r:'valenciana', m2:20, saleM2:3500 },
+  { n:'Santa Cruz de Tenerife', r:'canarias', m2:17.5, saleM2:3300 },
+  { n:'Oviedo', r:'asturias', m2:16, saleM2:2350 },
+  { n:'Huelva', r:'andalucia', m2:10.5, saleM2:1650 },
+  { n:'Cadix', r:'andalucia', m2:15, saleM2:3200 },
+  { n:'León', r:'castilla_leon', m2:12.5, saleM2:1150 },
+  { n:'Lleida', r:'cataluna', m2:10, saleM2:1500 },
+  { n:'Fuengirola', r:'andalucia', m2:17.5, saleM2:3800 },
+  { n:'Estepona', r:'andalucia', m2:17.5, saleM2:4050 },
+  { n:'Jerez de la Frontera', r:'andalucia', m2:13, saleM2:2200 }
 ];
 const cityNorm = s => (s||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').trim();
 function cityLookup(str) { const q = cityNorm(str); return q ? CITIES.find(c => cityNorm(c.n) === q) : null; }
@@ -1418,7 +1421,7 @@ I18N.fr = {
 
   t_itp_n: "ITP", t_itp_fr: "Taxe sur les transmissions patrimoniales", t_itp_d: "Impuesto sobre Transmisiones Patrimoniales. Taxe payée par l'acheteur sur les biens anciens. Le taux varie de 6 % à 13 % selon la région et, pour certaines d'entre elles, par tranches de prix.",
   t_iva_n: "IVA", t_iva_fr: "TVA (taxe sur la valeur ajoutée)", t_iva_d: "TVA espagnole, appliquée aux biens neufs (10 %, ou 4 % pour les VPO). Remplace l'ITP.",
-  t_ajd_n: "AJD", t_ajd_fr: "Droits sur les actes notariés", t_ajd_d: "Actos Jurídicos Documentados. Taxe sur les actes notariés, uniquement sur les biens neufs. De 0,5 % à 1,5 % selon la région.",
+  t_ajd_n: "AJD", t_ajd_fr: "Droits sur les actes notariés", t_ajd_d: "Actos Jurídicos Documentados. Taxe sur les actes notariés, uniquement sur les biens neufs. De 0,5 % à 2 % selon la région.",
   t_igic_n: "IGIC", t_igic_fr: "TVA des îles Canaries", t_igic_d: "Impuesto General Indirecto Canario. L'équivalent de la TVA aux îles Canaries, à 7 % au lieu de 10 %.",
   t_irnr_n: "IRNR", t_irnr_fr: "Impôt sur le revenu des non-résidents", t_irnr_d: "Impuesto sobre la Renta de No Residentes. Impôt espagnol sur les revenus locatifs des non-résidents : 19 % pour les résidents de l'UE/EEE, 24 % ailleurs.",
   t_ibi_n: "IBI", t_ibi_fr: "Taxe foncière", t_ibi_d: "Impuesto sobre Bienes Inmuebles. L'équivalent de la taxe foncière, payée chaque année à la mairie.",
